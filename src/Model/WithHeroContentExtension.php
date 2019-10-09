@@ -2,11 +2,16 @@
 
 namespace Logicbrush\HeroContent\Model;
 
+use SilverStripe\AssetAdmin\Forms\UploadField;
 use SilverStripe\Assets\Image;
 use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\GridField\GridField;
+use SilverStripe\Forms\GridField\GridFieldAddExistingAutocompleter;
+use SilverStripe\Forms\GridField\GridFieldAddNewButton;
+use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
 use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
-use SilverStripe\AssetAdmin\Forms\UploadField;
 use SilverStripe\ORM\DataExtension;
+use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
 
 class WithHeroContentExtension extends DataExtension {
 
@@ -30,15 +35,13 @@ class WithHeroContentExtension extends DataExtension {
 	public function updateCMSFields( FieldList $fields ) {
 
 		$slideFieldConfig = GridFieldConfig_RecordEditor::create();
-		if ( $this->Slides()->count() > 0 ) {
-            $slideFieldConfig->removeComponentsByType( GridFieldAddNewButton::class );
-            $slideFieldConfig->removeComponentsByType( GridFieldAddExistingAutocompleter::class );
-		}
+		$slideFieldConfig->addComponent( new GridFieldOrderableRows( 'SortOrder' ) );
+
 		$slideField = GridField::create(
-            'Slides',
-            'Slide',
-            $this->Slides(),
-            $slideFieldConfig
+			'Slides',
+			'Slide',
+			$this->Slides(),
+			$slideFieldConfig
 		);
 		$fields->addFieldToTab( 'Root.HeroContent', $slideField );
 

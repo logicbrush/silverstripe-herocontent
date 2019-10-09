@@ -10,7 +10,8 @@
 				"email": "jflearn@logicbrush.com"
 		}],
 		"require": {
-				"silverstripe/cms": "^4.0"
+				"silverstripe/cms": "^4.0",
+        "undefinedoffset/sortablegridfield": "*"
 		},
 		"autoload": {
 				"psr-4": {
