@@ -1,6 +1,6 @@
 {
-		"name": "logicbrush/silverstripe-rolluppage",
-		"description": "A module for the SilverStripe CMS which rolls up the contents of child pages for display on a single page.",
+		"name": "logicbrush/silverstripe-herocontent",
+		"description": "A module for the SilverStripe CMS which allows you to add a big block of important content at the top of the page.",
 		"homepage": "https://www.logicbrush.com/specialities/silverstripe-development/",
 		"keywords": ["silverstripe"],
 		"type": "silverstripe-vendormodule",
