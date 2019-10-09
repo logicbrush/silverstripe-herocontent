@@ -3,14 +3,18 @@
 
 <div id="rotate-slide-{$Slides.First.ID}" class="rotate">
 		<% loop $Slides %>
-		<div class="slide">
+		<div class="slide" style="position: relative">
+				<% if $Title %>
+				<div class="grid-aligned" style="position: absolute; width: 100%">
+						<div class="span-all">
+								<h3>$Title</h3>
+						</div>
+				</div>
+				<% end_if %>
 				<img
 						src="{$Image.FocusFill(3360,945).URL}"
-						alt="{$Image.Title}"
+								 alt="{$Image.Title}"
 				/>
-				<% if $Title %>
-				<h3>$Title</h3>
-				<% end_if %>
 		</div>
 		<% end_loop %>
 </div>
