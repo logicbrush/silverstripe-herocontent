@@ -17,13 +17,13 @@ use SilverStripe\View\ArrayData;
 
 class WithHeroContentExtension extends DataExtension {
 
-    public function HeroContent() {
-        if ($this->owner->Slides()->exists()) {
-            return ArrayData::create([
-                'Slides' => $this->owner->Slides(),
-            ])->renderWith('Slides');
-        }
-    }
+	public function HeroContent() {
+		if ($this->owner->Slides()->exists()) {
+			return ArrayData::create([
+				'Slides' => $this->owner->Slides(),
+			])->renderWith('Slides');
+		}
+	}
 
 	public function updateCMSFields( FieldList $fields ) {
 
@@ -50,9 +50,9 @@ class WithHeroContentExtension extends DataExtension {
 
 	}
 
-    private static $casting = [
-        'HeroContent' => 'HTMLText',
-    ];
+	private static $casting = [
+		'HeroContent' => 'HTMLText',
+	];
 
 	private static $has_many = [
 		'Slides' => Slide::class . '.Page',
@@ -62,9 +62,9 @@ class WithHeroContentExtension extends DataExtension {
 		'HeroImage' => Image::class,
 	];
 
-    private static $owns = [
+	private static $owns = [
 		'HeroImage',
-        'Slides',
+		'Slides',
 	];
 
 }

@@ -17,23 +17,23 @@ class Slide extends DataObject {
 		$image->setFolderName( 'slides' );
 		$image->getValidator()->setAllowedMaxFileSize( 10485760 );
 
-        $title = TextField::create('Title', 'Caption');
-        
+		$title = TextField::create('Title', 'Caption');
+		
 		return FieldList::create(
 			$image, $title
 		);
 	}
-    
+	
 	private static $singular_name = 'Slide';
 	private static $plural_name = 'Slides';
-    private static $table_name = 'Slide';
+	private static $table_name = 'Slide';
 
-    private static $default_sort = 'SortOrder ASC';
-    
-    private static $extensions = [
-        Versioned::class,
-    ];
-    
+	private static $default_sort = 'SortOrder ASC';
+	
+	private static $extensions = [
+		Versioned::class,
+	];
+	
 	private static $summary_fields = [
 		'Image.CMSThumbnail',
 	];
@@ -52,7 +52,7 @@ class Slide extends DataObject {
 	];
 
 	private static $db = [
-        'Title' => 'Varchar(255)',
+		'Title' => 'Varchar(255)',
 		'SortOrder' => 'Int',
 	];
 
