@@ -1,11 +1,11 @@
-<% require themedCSS('thirdparty/slick.css') %>
-<% require themedJavascript('thirdparty/slick.min.js') %>
+<% require css('logicbrush/silverstripe-herocontent:thirdparty/slick.css') %>
+<% require javascript('logicbrush/silverstripe-herocontent:thirdparty/slick.min.js') %>
 
 <div id="rotate-slide-{$Slides.First.ID}" class="rotate">
 		<% loop $Slides %>
 		<img
 				src="{$Image.FocusFill(1200,400).URL}"
-				alt="{$Image.Title}"
+						 alt="{$Image.Title}"
 		/>
 		<% end_loop %>
 </div>
