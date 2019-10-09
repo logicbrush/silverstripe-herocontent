@@ -3,10 +3,15 @@
 
 <div id="rotate-slide-{$Slides.First.ID}" class="rotate">
 		<% loop $Slides %>
-		<img
-				src="{$Image.FocusFill(3360,1890).URL}"
-						 alt="{$Image.Title}"
-		/>
+		<div class="slide">
+				<img
+						src="{$Image.FocusFill(3360,1890).URL}"
+						alt="{$Image.Title}"
+				/>
+				<% if $Title %>
+				<h3>$Title</h3>
+				<% end_if %>
+		</div>
 		<% end_loop %>
 </div>
 
