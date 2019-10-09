@@ -19,7 +19,9 @@ class WithHeroContentExtension extends DataExtension {
         if ($this->owner->Slides()->exists()) {
             $content = '';
             foreach($this->owner->Slides() as $slide) {
-                $content .= '<img src="' . $slide->FocusFill(1200,400)->URL . '" alt="' . $slide->Title . '" />';
+                if ($slide->Image) {
+                    $content .= '<img src="' . $slide->Image->FocusFill(1200,400)->URL . '" alt="' . $slide->Title . '" />';
+                }
             }
             return $content;
         }
