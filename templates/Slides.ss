@@ -1,7 +1,7 @@
 <% require themedCSS('thirdparty/slick.css') %>
 <% require themedJavascript('thirdparty/slick.min.js') %>
 
-<div id="rotate-{$Slides[0].ID}" class="rotate">
+<div id="rotate-slide-{$Slides.First.ID}" class="rotate">
 		<% loop $Slides %>
 		<img
 				src="{$Image.FocusFill(1200,400).URL}"
@@ -11,7 +11,7 @@
 </div>
 
 <script type="text/javascript" defer>
- jQuery('#rotate-{$Slides[0].ID}').slick({
+ jQuery('#rotate-slide-{$Slides.First.ID}').slick({
      infinite: true,
      fade: true,
      autoplay: true,
