@@ -1,0 +1,8 @@
+---
+name: herocontent
+---
+
+Page:
+  extensions:
+    - Logicbrush\HeroContent\Model\WithHeroContentExtension
+  
