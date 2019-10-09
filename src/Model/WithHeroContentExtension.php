@@ -40,7 +40,7 @@ class WithHeroContentExtension extends DataExtension {
 		$slideField = GridField::create(
 			'Slides',
 			'Slide',
-			$this->Slides(),
+			$this->owner->Slides(),
 			$slideFieldConfig
 		);
 		$fields->addFieldToTab( 'Root.HeroContent', $slideField );
