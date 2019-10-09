@@ -15,22 +15,15 @@ use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
 
 class WithHeroContentExtension extends DataExtension {
 
-	private static $db = [
-		//'HeroContent' => 'HTMLText',
-	];
-
-	private static $has_many = [
-		'Slides' => Slide::class . '.Page',
-	];
-
-	private static $has_one = [
-		'HeroImage' => Image::class,
-	];
-
-    private static $owns = [
-		'HeroImage',
-        'Slides',
-	];
+    public function HeroContent() {
+        if ($this->owner->Slides()->exists()) {
+            $content = '';
+            foreach($this->owner->Slides() as $slide) {
+                $content .= '<img src="' . $slide->FocusFill(1200,400)->URL . '" alt="' . $slide->Title . '" />';
+            }
+            return $content;
+        }
+    }
 
 	public function updateCMSFields( FieldList $fields ) {
 
@@ -55,17 +48,19 @@ class WithHeroContentExtension extends DataExtension {
 		);
 		$fields->addFieldToTab( 'Root.HeroContent', $slideField );
 
-
-		// // Add the Content block
-		// $fields->addFieldToTab(
-		// 	'Root.HeroContent',
-		// 	$field = HTMLEditorField::create(
-		// 		'HeroContent',
-		// 		'Content'
-		// 	)
-		// );
-
 	}
 
+	private static $has_many = [
+		'Slides' => Slide::class . '.Page',
+	];
+
+	private static $has_one = [
+		'HeroImage' => Image::class,
+	];
+
+    private static $owns = [
+		'HeroImage',
+        'Slides',
+	];
 
 }
