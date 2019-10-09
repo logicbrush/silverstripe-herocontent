@@ -4,7 +4,7 @@
 <div id="rotate-slide-{$Slides.First.ID}" class="rotate">
 		<% loop $Slides %>
 		<img
-				src="{$Image.FocusFill(3360,900).URL}"
+				src="{$Image.FocusFill(3360,1890).URL}"
 						 alt="{$Image.Title}"
 		/>
 		<% end_loop %>
