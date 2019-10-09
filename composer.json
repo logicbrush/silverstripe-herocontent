@@ -11,7 +11,11 @@
 		}],
 		"require": {
 				"silverstripe/cms": "^4.0",
+				"silverstripe/asset-admin": "*",
         "undefinedoffset/sortablegridfield": "*"
+		},
+		"require-dev": {
+				"phpunit/phpunit": "^5.7"
 		},
 		"autoload": {
 				"psr-4": {
