@@ -5,7 +5,7 @@
 		<% loop $Slides %>
 		<div class="slide">
 				<img
-						src="{$Image.FocusFill(3360,1890).URL}"
+						src="{$Image.FocusFill(3360,945).URL}"
 						alt="{$Image.Title}"
 				/>
 				<% if $Title %>
