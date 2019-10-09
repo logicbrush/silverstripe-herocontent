@@ -29,10 +29,20 @@ class WithHeroContentExtension extends DataExtension {
 
     private static $owns = [
 		'HeroImage',
-        'Slide',
+        'Slides',
 	];
 
 	public function updateCMSFields( FieldList $fields ) {
+
+		// Add the image field.
+		$fields->addFieldToTab(
+			'Root.HeroContent',
+			$field = UploadField::create(
+				'HeroImage',
+				'Background Image'
+			)
+		);
+		$field->setAllowedFileCategories( 'image' );
 
 		$slideFieldConfig = GridFieldConfig_RecordEditor::create();
 		$slideFieldConfig->addComponent( new GridFieldOrderableRows( 'SortOrder' ) );
@@ -45,15 +55,6 @@ class WithHeroContentExtension extends DataExtension {
 		);
 		$fields->addFieldToTab( 'Root.HeroContent', $slideField );
 
-		// Add the image field.
-		$fields->addFieldToTab(
-			'Root.HeroContent',
-			$field = UploadField::create(
-				'HeroImage',
-				'Background Image'
-			)
-		);
-		$field->setAllowedFileCategories( 'image' );
 
 		// // Add the Content block
 		// $fields->addFieldToTab(
