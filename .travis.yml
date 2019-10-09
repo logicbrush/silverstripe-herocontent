@@ -3,10 +3,7 @@ language: php
 matrix:
   include:
     - php: 7.2
-      env: DB=MYSQL PHPUNIT_TEST=1 PHPUNIT_COVERAGE_TEST=1
-
-services:
-  - sqlite3
+      env: DB=sqlite PHPUNIT_TEST=1 PHPUNIT_COVERAGE_TEST=1
 
 before_script:
   
