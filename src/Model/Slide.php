@@ -22,8 +22,9 @@ class Slide extends DataObject {
     
 	private static $singular_name = 'Slide';
 	private static $plural_name = 'Slides';
-    private static $table_name = 'Slides';
-	private static $default_sort = 'SortOrder ASC';
+    private static $table_name = 'Slide';
+
+    private static $default_sort = 'SortOrder ASC';
     
     private static $extensions = [
         Versioned::class,
