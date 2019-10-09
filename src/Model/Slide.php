@@ -2,21 +2,25 @@
 
 namespace Logicbrush\HeroContent\Model;
 
-use SilverStripe\Assets\Image;
 use SilverStripe\AssetAdmin\Forms\UploadField;
+use SilverStripe\Assets\Image;
 use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\TextField;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\Versioned\Versioned;
 
 class Slide extends DataObject {
 
 	public function getCMSFields() {
+
 		$image = UploadField::create( 'Image', 'Image' );
 		$image->setFolderName( 'slides' );
 		$image->getValidator()->setAllowedMaxFileSize( 10485760 );
 
+        $title = TextField::create('Title', 'Caption');
+        
 		return FieldList::create(
-			$image
+			$image, $title
 		);
 	}
     
@@ -48,6 +52,7 @@ class Slide extends DataObject {
 	];
 
 	private static $db = [
+        'Title' => 'Varchar(255)',
 		'SortOrder' => 'Int',
 	];
 
