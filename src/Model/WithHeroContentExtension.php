@@ -49,7 +49,7 @@ class WithHeroContentExtension extends DataExtension {
 
 		$slideField = GridField::create(
 			'Slides',
-			'Slide',
+			'Slides',
 			$this->owner->Slides(),
 			$slideFieldConfig
 		);
