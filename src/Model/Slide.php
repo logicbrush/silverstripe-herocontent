@@ -6,6 +6,7 @@ use SilverStripe\Assets\Image;
 use SilverStripe\AssetAdmin\Forms\UploadField;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\ORM\DataObject;
+use SilverStripe\Versioned\Versioned;
 
 class Slide extends DataObject {
 
