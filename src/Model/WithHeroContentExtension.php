@@ -20,7 +20,7 @@ class WithHeroContentExtension extends DataExtension {
 	];
 
 	private static $has_many = [
-		'Slides' => Slide::class,
+		'Slides' => Slide::class . '.Page',
 	];
 
 	private static $has_one = [
