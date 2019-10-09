@@ -1,0 +1,23 @@
+<% require themedCSS('thirdparty/slick.css') %>
+<% require themedJavascript('thirdparty/slick.min.js') %>
+
+<div id="rotate-{$Slides[0].ID}" class="rotate">
+		<% loop $Slides %>
+		<img
+				src="{$Image.FocusFill(1200,400).URL}"
+				alt="{$Image.Title}"
+		/>
+		<% end_loop %>
+</div>
+
+<script type="text/javascript" defer>
+ jQuery('#rotate-{$Slides[0].ID}').slick({
+     infinite: true,
+     fade: true,
+     autoplay: true,
+     autoplaySpeed: 8000,
+     speed: 1000,
+     prevArrow: '<div class="slick-prev"><span class="fas fa-chevron-left" aria-hidden="true"></span></div>',
+     nextArrow: '<div class="slick-next"><span class="fas fa-chevron-right" aria-hidden="true"></span></div>',
+ });
+</script>

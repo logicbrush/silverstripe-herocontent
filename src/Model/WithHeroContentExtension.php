@@ -13,35 +13,15 @@ use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
 use SilverStripe\ORM\DataExtension;
 use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
 use SilverStripe\View\Requirements;
+use SilverStripe\View\ArrayData;
 
 class WithHeroContentExtension extends DataExtension {
 
     public function HeroContent() {
         if ($this->owner->Slides()->exists()) {
-			
-			Requirements::themedCSS('thirdparty/slick.css');
-			Requirements::javascript('themes/vanilla/thirdparty/slick.min.js');
-			Requirements::customScript(<<<JS
-    jQuery('.rotate').slick({
-        infinite: true,
-        fade: true,
-        autoplay: true,
-        autoplaySpeed: 8000,
-        speed: 1000,
-        prevArrow: '<div class="slick-prev"><span class="fas fa-chevron-left" aria-hidden="true"></span></div>',
-        nextArrow: '<div class="slick-next"><span class="fas fa-chevron-right" aria-hidden="true"></span></div>',
-    });
-JS
-			);
-				
-            $content = '<div class="rotate">';
-            foreach($this->owner->Slides() as $slide) {
-                if ($slide->Image) {
-                    $content .= '<img src="' . $slide->Image->FocusFill(1200,400)->URL . '" alt="' . $slide->Title . '" />';
-                }
-            }
-			$content .= "</div>";
-            return $content;
+            return ArrayData::create([
+                'Slides' => $this->owner->Slides(),
+            ])->renderWith('Slides');
         }
     }
 
