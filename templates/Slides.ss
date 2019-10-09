@@ -10,6 +10,7 @@
 		<% end_loop %>
 </div>
 
+<% if $Slides.Count > 1 %>
 <script type="text/javascript" defer>
  jQuery('#rotate-slide-{$Slides.First.ID}').slick({
      infinite: true,
@@ -21,3 +22,4 @@
      nextArrow: '<div class="slick-next"><span class="fas fa-chevron-right" aria-hidden="true"></span></div>',
  });
 </script>
+<% end_if %>
