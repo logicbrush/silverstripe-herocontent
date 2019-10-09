@@ -5,6 +5,9 @@ matrix:
     - php: 7.2
       env: DB=MYSQL PHPUNIT_TEST=1 PHPUNIT_COVERAGE_TEST=1
 
+services:
+  - sqlite3
+
 before_script:
   
   - composer install --prefer-dist
