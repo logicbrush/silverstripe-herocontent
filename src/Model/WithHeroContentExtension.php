@@ -52,6 +52,10 @@ class WithHeroContentExtension extends DataExtension {
 
 	}
 
+    private static $casts = [
+        'HeroContent' => 'HTMLText',
+    ];
+
 	private static $has_many = [
 		'Slides' => Slide::class . '.Page',
 	];
