@@ -6,7 +6,7 @@
 	<div class="slide" style="position: relative">
 		<% if $Content %>
 		<div class="grid-aligned" style="position: absolute; width: 100%">
-			<div class="span-all">
+			<div class="span-all typography">
 				$Content
 			</div>
 		</div>
