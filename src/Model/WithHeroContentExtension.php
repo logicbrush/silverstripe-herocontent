@@ -9,11 +9,12 @@ use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\Forms\GridField\GridFieldAddExistingAutocompleter;
 use SilverStripe\Forms\GridField\GridFieldAddNewButton;
 use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
+use SilverStripe\Forms\GridField\GridFieldDataColumns;
 use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
 use SilverStripe\ORM\DataExtension;
-use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
-use SilverStripe\View\Requirements;
 use SilverStripe\View\ArrayData;
+use SilverStripe\View\Requirements;
+use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
 
 class WithHeroContentExtension extends DataExtension {
 
@@ -40,6 +41,11 @@ class WithHeroContentExtension extends DataExtension {
 		$slideFieldConfig = GridFieldConfig_RecordEditor::create();
 		$slideFieldConfig->addComponent( new GridFieldOrderableRows( 'SortOrder' ) );
 
+		$dataColumns = $slideFieldConfig->getComponentByType( GridFieldDataColumns::class );
+		$dataColumns
+			->setFieldCasting( [
+				'Content' => 'HTMLText->RAW',
+			] );
 		$slideField = GridField::create(
 			'Slides',
 			'Slides',
