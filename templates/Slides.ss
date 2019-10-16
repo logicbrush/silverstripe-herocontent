@@ -6,9 +6,8 @@
 	<div class="slide" style="
 		position: relative;
 		<% if $Image %>
-		background: url({$Image.URL}) center center; 
+		background: url({$Image.FocusFill(1680,945).URL}) center center; 
 		background-size: cover;
-		min-height: {$Image.Height}px
 		<% end_if %>
 		">
 		<% if $Content %>
