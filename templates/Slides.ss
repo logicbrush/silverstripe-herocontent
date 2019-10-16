@@ -4,7 +4,7 @@
 <div id="rotate-slide-{$Slides.First.ID}" class="rotate">
 	<% loop $Slides %>
 	<div class="slide" style="position: relative;
-		<% if $Image %>background: {$Image.FocusFill(3360,945).URL};<% end_if %>
+		<% if $Image %>background: url({$Image.FocusFill(3360,945).URL}) center center contain;<% end_if %>
 		">
 		<% if $Content %>
 		<div class="grid-aligned" style="position: absolute; width: 100%">
