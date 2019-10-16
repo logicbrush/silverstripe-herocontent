@@ -6,6 +6,7 @@ use SilverStripe\AssetAdmin\Forms\UploadField;
 use SilverStripe\Assets\Image;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
+use SilverStripe\Forms\TextareaField;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\Versioned\Versioned;
 
@@ -19,9 +20,20 @@ class Slide extends DataObject {
 
 		$content = HTMLEditorField::create('Content', 'Content');
 		
-		return FieldList::create(
+		$fields = FieldList::create(
 			$image, $content
 		);
+
+		$fields->addFieldToTab(
+			'Root.Advanced',
+			$field = TextareaField::create(
+				'AdditionalHTML',
+				'Additional HTML'
+			)
+		);
+		$field->setRows(10);
+
+		return $fields;
 	}
 	
 	private static $singular_name = 'Slide';
@@ -54,6 +66,7 @@ class Slide extends DataObject {
 
 	private static $db = [
 		'Content' => 'HTMLText',
+		'AdditionalHTML' => 'HTMLText',
 		'SortOrder' => 'Int',
 	];
 
