@@ -11,10 +11,15 @@
 			</div>
 		</div>
 		<% end_if %>
+		<% if $Image %>
 		<img
 			src="{$Image.FocusFill(3360,945).URL}"
 			alt="{$Image.Title}"
 		/>
+		<% end_if %>
+		<% if $AdditionalHTML %>
+		$AdditionalHTML
+		<% end_if %>
 	</div>
 	<% end_loop %>
 </div>

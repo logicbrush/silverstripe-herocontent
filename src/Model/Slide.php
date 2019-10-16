@@ -6,6 +6,7 @@ use SilverStripe\AssetAdmin\Forms\UploadField;
 use SilverStripe\Assets\Image;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
+use SilverStripe\Forms\TabSet;
 use SilverStripe\Forms\TextareaField;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\Versioned\Versioned;
@@ -14,15 +15,20 @@ class Slide extends DataObject {
 
 	public function getCMSFields() {
 
-		$image = UploadField::create( 'Image', 'Image' );
-		$image->setFolderName( 'slides' );
-		$image->getValidator()->setAllowedMaxFileSize( 10485760 );
+		$fields = FieldList::create();
+		$fields->push(TabSet::create("Root"));
 
-		$content = HTMLEditorField::create('Content', 'Content');
-		
-		$fields = FieldList::create(
-			$image, $content
+		$fields->addFieldToTab(
+			'Root.Main',
+			$field = HTMLEditorField::create('Content', 'Content')
 		);
+
+		$fields->addFieldToTab(
+			'Root.Main',
+			$field = UploadField::create( 'Image', 'Image' )
+		);
+		$field->setFolderName( 'slides' );
+		$field->getValidator()->setAllowedMaxFileSize( 10485760 );
 
 		$fields->addFieldToTab(
 			'Root.Advanced',
@@ -31,6 +37,7 @@ class Slide extends DataObject {
 				'Additional HTML'
 			)
 		);
+		$field->setRightTitle('You can add additional HTML code to the slide her.');
 		$field->setRows(10);
 
 		return $fields;
