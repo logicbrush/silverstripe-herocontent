@@ -29,4 +29,11 @@ class DisplayTest extends SapphireTest
 
 		$this->assertNotEmpty(trim($page->HeroContent()->value));
 	}
+
+	public function testGetCMSFields()
+	{
+		$page = new DisplayTestPage();
+		$fields = $page->getCMSFields();
+		$this->assertNotNull($fields);
+	}
 }

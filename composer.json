@@ -16,7 +16,7 @@
 	"require": {
 		"silverstripe/cms": "^4.0",
 		"silverstripe/asset-admin": "*",
-		"undefinedoffset/sortablegridfield": "*",
+		"symbiote/silverstripe-gridfieldextensions": "*",
 		"jonom/focuspoint": "*"
 	},
 	"extra": {
