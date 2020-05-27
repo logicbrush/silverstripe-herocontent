@@ -2,33 +2,28 @@
 
 namespace Logicbrush\HeroContent\Model;
 
+use Page;
 use SilverStripe\AssetAdmin\Forms\UploadField;
 use SilverStripe\Assets\Image;
-use SilverStripe\Forms\FieldList;
-use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
-use SilverStripe\Forms\TabSet;
 use SilverStripe\Forms\TextareaField;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\Versioned\Versioned;
 
-class Slide extends DataObject {
+class Slide extends DataObject
+{
+	public function getCMSFields()
+	{
+		$fields = parent::getCMSFields();
 
-	public function getCMSFields() {
-
-		$fields = FieldList::create();
-		$fields->push(TabSet::create("Root"));
-
-		$fields->addFieldToTab(
-			'Root.Main',
-			$field = HTMLEditorField::create('Content', 'Content')
-		);
+		$fields->removeByName('SortOrder');
+		$fields->removeByName('PageID');
 
 		$fields->addFieldToTab(
 			'Root.Main',
-			$field = UploadField::create( 'Image', 'Image' )
+			$field = UploadField::create('Image', 'Image')
 		);
-		$field->setFolderName( 'slides' );
-		$field->getValidator()->setAllowedMaxFileSize( 10485760 );
+		$field->setFolderName('slides');
+		$field->getValidator()->setAllowedMaxFileSize(10485760);
 
 		$fields->addFieldToTab(
 			'Root.Advanced',
@@ -42,17 +37,17 @@ class Slide extends DataObject {
 
 		return $fields;
 	}
-	
+
 	private static $singular_name = 'Slide';
 	private static $plural_name = 'Slides';
 	private static $table_name = 'Slide';
 
 	private static $default_sort = 'SortOrder ASC';
-	
+
 	private static $extensions = [
 		Versioned::class,
 	];
-	
+
 	private static $summary_fields = [
 		'Image.CMSThumbnail',
 		'Content',
@@ -76,5 +71,4 @@ class Slide extends DataObject {
 		'AdditionalHTML' => 'HTMLText',
 		'SortOrder' => 'Int',
 	];
-
 }

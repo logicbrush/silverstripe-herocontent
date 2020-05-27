@@ -27,13 +27,13 @@
 <% if $Slides.Count > 1 %>
 <script type="text/javascript" defer>
 	jQuery('#rotate-slide-{$Slides.First.ID}').slick({
-    infinite: true,
-    fade: true,
-    autoplay: true,
-    autoplaySpeed: 8000,
-    speed: 1000,
-    prevArrow: '<div class="slick-prev"><span class="fas fa-chevron-left" aria-hidden="true"></span></div>',
-    nextArrow: '<div class="slick-next"><span class="fas fa-chevron-right" aria-hidden="true"></span></div>',
+		infinite: true,
+		fade: true,
+		autoplay: true,
+		autoplaySpeed: 8000,
+		speed: 1000,
+		prevArrow: '<div class="slick-prev"><span class="fas fa-chevron-left" aria-hidden="true"></span></div>',
+		nextArrow: '<div class="slick-next"><span class="fas fa-chevron-right" aria-hidden="true"></span></div>',
 	});
 </script>
 <% end_if %>
