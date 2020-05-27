@@ -6,19 +6,16 @@ use SilverStripe\AssetAdmin\Forms\UploadField;
 use SilverStripe\Assets\Image;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\GridField\GridField;
-use SilverStripe\Forms\GridField\GridFieldAddExistingAutocompleter;
-use SilverStripe\Forms\GridField\GridFieldAddNewButton;
 use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
 use SilverStripe\Forms\GridField\GridFieldDataColumns;
-use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
 use SilverStripe\ORM\DataExtension;
 use SilverStripe\View\ArrayData;
-use SilverStripe\View\Requirements;
 use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
 
-class WithHeroContentExtension extends DataExtension {
-
-	public function HeroContent() {
+class WithHeroContentExtension extends DataExtension
+{
+	public function HeroContent()
+	{
 		if ($this->owner->Slides()->exists()) {
 			return ArrayData::create([
 				'Slides' => $this->owner->Slides(),
@@ -26,7 +23,8 @@ class WithHeroContentExtension extends DataExtension {
 		}
 	}
 
-	public function updateCMSFields( FieldList $fields ) {
+	public function updateCMSFields(FieldList $fields)
+	{
 
 		// Add the image field.
 		$fields->addFieldToTab(
@@ -36,24 +34,23 @@ class WithHeroContentExtension extends DataExtension {
 				'Background Image'
 			)
 		);
-		$field->setAllowedFileCategories( 'image' );
+		$field->setAllowedFileCategories('image');
 
 		$slideFieldConfig = GridFieldConfig_RecordEditor::create();
-		$slideFieldConfig->addComponent( new GridFieldOrderableRows( 'SortOrder' ) );
+		$slideFieldConfig->addComponent(new GridFieldOrderableRows('SortOrder'));
 
-		$dataColumns = $slideFieldConfig->getComponentByType( GridFieldDataColumns::class );
+		$dataColumns = $slideFieldConfig->getComponentByType(GridFieldDataColumns::class);
 		$dataColumns
-			->setFieldCasting( [
+			->setFieldCasting([
 				'Content' => 'HTMLText->RAW',
-			] );
+			]);
 		$slideField = GridField::create(
 			'Slides',
 			'Slides',
 			$this->owner->Slides(),
 			$slideFieldConfig
 		);
-		$fields->addFieldToTab( 'Root.HeroContent', $slideField );
-
+		$fields->addFieldToTab('Root.HeroContent', $slideField);
 	}
 
 	private static $casting = [
@@ -72,5 +69,4 @@ class WithHeroContentExtension extends DataExtension {
 		'HeroImage',
 		'Slides',
 	];
-
 }
