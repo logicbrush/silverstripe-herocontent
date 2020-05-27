@@ -2,11 +2,9 @@
 
 namespace Logicbrush\HeroContent\Model;
 
+use Page;
 use SilverStripe\AssetAdmin\Forms\UploadField;
 use SilverStripe\Assets\Image;
-use SilverStripe\Forms\FieldList;
-use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
-use SilverStripe\Forms\TabSet;
 use SilverStripe\Forms\TextareaField;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\Versioned\Versioned;
@@ -15,13 +13,10 @@ class Slide extends DataObject
 {
 	public function getCMSFields()
 	{
-		$fields = FieldList::create();
-		$fields->push(TabSet::create('Root'));
+		$fields = parent::getCMSFields();
 
-		$fields->addFieldToTab(
-			'Root.Main',
-			$field = HTMLEditorField::create('Content', 'Content')
-		);
+		$fields->removeByName('SortOrder');
+		$fields->removeByName('PageID');
 
 		$fields->addFieldToTab(
 			'Root.Main',
