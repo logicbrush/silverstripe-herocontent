@@ -14,21 +14,16 @@
 		"email": "jflearn@logicbrush.com"
 	}],
 	"require": {
-		"php": "^7.4||^8.0",
+		"php": "^7.2||^8.0",
 		"silverstripe/cms": "^4.0",
 		"silverstripe/asset-admin": "*",
 		"symbiote/silverstripe-gridfieldextensions": "*",
 		"jonom/focuspoint": "*"
 	},
-	"extra": {
-		"expose": [
-			"client/dist"
-		]
-	},
 	"require-dev": {
-		"phpunit/phpunit": "^9.5",
+		"phpunit/phpunit": "^8.0||^9.5",
 		"silverstripe/sqlite3": "^2.2",
-		"logicbrush/metrics": "^0.2.0",
+		"logicbrush/metrics": "^0.3.0",
 		"cmrcx/phptidy": "^3.3"
 	},
 	"autoload": {
@@ -40,6 +35,11 @@
 		"psr-4": {
 			"Logicbrush\\HeroContent\\Tests\\": "tests/"
 		}
+	},
+	"extra": {
+		"expose": [
+			"client/dist"
+		]
 	},
 	"config": {
 		"allow-plugins": {
