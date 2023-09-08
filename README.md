@@ -1,14 +1,15 @@
 # silverstripe-herocontent
 
 A module for the SilverStripe CMS which allows you to add a big block of
-(optionally scrolling) content at the top of the page as is typical with landing
+(optionally rotating) content at the top of the page as is typical with landing
 pages.
 
 ## Why?
 
-When creating landing pages, we often need to add a big block of exciting
-content at the top of the page.  This module will let you turn any page into a
-landing page.
+When creating landing pages, we often want to add something flashy at the top of
+the page to quickly capture visitor interest.  This module allows us to
+configure this using a common backend, but customize display on a
+client-by-client basis.
 
 ## Installation
 
