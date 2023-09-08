@@ -1,11 +1,13 @@
 # silverstripe-herocontent
 
 A module for the SilverStripe CMS which allows you to add a big block of
-important content at the top of the page.
+scrolling or static content at the top of the page.
 
 ## Why?
 
-TBD
+When creating landing pages, we often need to add a big block of exciting
+content at the top of the page.  This module will let you turn any page into a
+landing page.
 
 ## Installation
 
@@ -13,6 +15,10 @@ TBD
 composer require "logicbrush/silverstripe-herocontent"
 ```
 
-## Usage
+## General Usage
 
-TBD
+Installation of this module will add a `Hero content` tab to your pages wihin
+the CMS.  Here, you can select a background image and set up zero or more
+"slides" that will cycle through using Slick.js.
+
+
