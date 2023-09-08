@@ -23,7 +23,7 @@
 	"require-dev": {
 		"phpunit/phpunit": "^8.0||^9.5",
 		"silverstripe/sqlite3": "^2.2",
-		"logicbrush/metrics": "^0.2.0",
+		"logicbrush/metrics": "^0.3.0",
 		"cmrcx/phptidy": "^3.3"
 	},
 	"autoload": {
