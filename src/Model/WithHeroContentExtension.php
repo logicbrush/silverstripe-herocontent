@@ -14,6 +14,7 @@ use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
 use SilverStripe\Forms\GridField\GridFieldDataColumns;
+use SilverStripe\Forms\Tab;
 use SilverStripe\ORM\DataExtension;
 use SilverStripe\View\ArrayData;
 use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
@@ -40,22 +41,24 @@ class WithHeroContentExtension extends DataExtension
 	 */
 	public function updateCMSFields(FieldList $fields) {
 
+		// Create the "Hero Content" tab.
+		$fields->insertAfter('Main', Tab::create($thisTabName = 'HeroContent'));
+
 		// Add the image field.
 		$fields->addFieldToTab(
-			'Root.HeroContent',
+			"Root.{$thisTabName}",
 			$field = UploadField::create(
 				'HeroImage',
 				'Background Image'
 			)
 		);
 		$field->setAllowedFileCategories('image');
-
+		
+		// Add the slide gridfield.
 		$slideFieldConfig = GridFieldConfig_RecordEditor::create();
 		$slideFieldConfig->addComponent(new GridFieldOrderableRows('SortOrder'));
-
 		$dataColumns = $slideFieldConfig->getComponentByType(GridFieldDataColumns::class);
-		$dataColumns
-		->setFieldCasting([
+		$dataColumns->setFieldCasting([
 				'Content' => 'HTMLText->RAW',
 			]);
 		$slideField = GridField::create(
@@ -64,7 +67,8 @@ class WithHeroContentExtension extends DataExtension
 			$this->owner->Slides(),
 			$slideFieldConfig
 		);
-		$fields->addFieldToTab('Root.HeroContent', $slideField);
+		$fields->addFieldToTab("Root.{$thisTabName}", $slideField);
+
 	}
 
 
