@@ -17,8 +17,6 @@ composer require "logicbrush/silverstripe-herocontent"
 
 ## General Usage
 
-Installation of this module will add a `Hero content` tab to your pages wihin
-the CMS.  Here, you can select a background image and set up zero or more
+Installation of this module will add a `Hero content` tab to all of your pages
+wihin the CMS.  Here, you can select a background image and set up zero or more
 "slides" that will cycle through using Slick.js.
-
-
