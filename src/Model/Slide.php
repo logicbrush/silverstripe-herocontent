@@ -20,6 +20,7 @@ class Slide extends DataObject
 
 	/**
 	 *
+	 * @Metrics( crap = 1 )
 	 * @return unknown
 	 */
 	public function getCMSFields() {
