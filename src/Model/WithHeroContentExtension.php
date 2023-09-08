@@ -1,4 +1,10 @@
 <?php
+/**
+ * src/Model/WithHeroContentExtension.php
+ *
+ * @package default
+ */
+
 
 namespace Logicbrush\HeroContent\Model;
 
@@ -14,17 +20,25 @@ use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
 
 class WithHeroContentExtension extends DataExtension
 {
-	public function HeroContent()
-	{
+
+	/**
+	 *
+	 * @return unknown
+	 */
+	public function HeroContent() {
 		if ($this->owner->Slides()->exists()) {
 			return ArrayData::create([
-				'Slides' => $this->owner->Slides(),
-			])->renderWith('Slides');
+					'Slides' => $this->owner->Slides(),
+				])->renderWith('Slides');
 		}
 	}
 
-	public function updateCMSFields(FieldList $fields)
-	{
+
+	/**
+	 *
+	 * @param FieldList $fields
+	 */
+	public function updateCMSFields(FieldList $fields) {
 
 		// Add the image field.
 		$fields->addFieldToTab(
@@ -41,7 +55,7 @@ class WithHeroContentExtension extends DataExtension
 
 		$dataColumns = $slideFieldConfig->getComponentByType(GridFieldDataColumns::class);
 		$dataColumns
-			->setFieldCasting([
+		->setFieldCasting([
 				'Content' => 'HTMLText->RAW',
 			]);
 		$slideField = GridField::create(
@@ -52,6 +66,7 @@ class WithHeroContentExtension extends DataExtension
 		);
 		$fields->addFieldToTab('Root.HeroContent', $slideField);
 	}
+
 
 	private static $casting = [
 		'HeroContent' => 'HTMLText',
