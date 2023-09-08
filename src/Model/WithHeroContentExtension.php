@@ -53,7 +53,7 @@ class WithHeroContentExtension extends DataExtension
 			)
 		);
 		$field->setAllowedFileCategories('image');
-		
+
 		// Add the slide gridfield.
 		$slideFieldConfig = GridFieldConfig_RecordEditor::create();
 		$slideFieldConfig->addComponent(new GridFieldOrderableRows('SortOrder'));
