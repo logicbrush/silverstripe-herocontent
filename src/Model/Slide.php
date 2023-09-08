@@ -1,4 +1,10 @@
 <?php
+/**
+ * src/Model/Slide.php
+ *
+ * @package default
+ */
+
 
 namespace Logicbrush\HeroContent\Model;
 
@@ -11,8 +17,13 @@ use SilverStripe\Versioned\Versioned;
 
 class Slide extends DataObject
 {
-	public function getCMSFields()
-	{
+
+	/**
+	 *
+	 * @Metrics( crap = 1 )
+	 * @return unknown
+	 */
+	public function getCMSFields() {
 		$fields = parent::getCMSFields();
 
 		$fields->removeByName('SortOrder');
@@ -37,6 +48,7 @@ class Slide extends DataObject
 
 		return $fields;
 	}
+
 
 	private static $singular_name = 'Slide';
 	private static $plural_name = 'Slides';

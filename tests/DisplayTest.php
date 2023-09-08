@@ -1,4 +1,10 @@
 <?php
+/**
+ * tests/DisplayTest.php
+ *
+ * @package default
+ */
+
 
 namespace Logicbrush\HeroContent\Tests;
 
@@ -14,12 +20,15 @@ class DisplayTestPage extends SiteTree
 	];
 }
 
+
 class DisplayTest extends SapphireTest
 {
 	public $usesDatabase = true;
 
-	public function testDisplayHeroContent()
-	{
+	/**
+	 *
+	 */
+	public function testDisplayHeroContent() {
 		$page = new DisplayTestPage();
 		$page->write();
 
@@ -30,10 +39,15 @@ class DisplayTest extends SapphireTest
 		$this->assertNotEmpty(trim($page->HeroContent()->value));
 	}
 
-	public function testGetCMSFields()
-	{
+
+	/**
+	 *
+	 */
+	public function testGetCMSFields() {
 		$page = new DisplayTestPage();
 		$fields = $page->getCMSFields();
 		$this->assertNotNull($fields);
 	}
+
+
 }

@@ -1,5 +1,5 @@
-<% require css('logicbrush/silverstripe-herocontent:thirdparty/slick.css') %>
-<% require javascript('logicbrush/silverstripe-herocontent:thirdparty/slick.min.js') %>
+<% require css('logicbrush/silverstripe-herocontent:client/dist/thirdparty/slick.css') %>
+<% require javascript('logicbrush/silverstripe-herocontent:client/dist/thirdparty/slick.min.js') %>
 
 <div id="rotate-slide-{$Slides.First.ID}" class="rotate">
 	<% loop $Slides %>
