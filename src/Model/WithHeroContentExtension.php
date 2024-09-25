@@ -24,6 +24,7 @@ class WithHeroContentExtension extends DataExtension
 
 	/**
 	 *
+	 * @Metrics( crap = 2 )
 	 * @return unknown
 	 */
 	public function HeroContent() {
@@ -37,6 +38,7 @@ class WithHeroContentExtension extends DataExtension
 
 	/**
 	 *
+	 * @Metrics( crap = 1 )
 	 * @param FieldList $fields
 	 */
 	public function updateCMSFields(FieldList $fields) {
