@@ -20,7 +20,7 @@ class SlideTest extends SapphireTest
 	public function testGetCMSFields() {
 		$slide = new Slide();
 		$fields = $slide->getCMSFields();
-		$this->assertNotNull($fields);
+		$this->assertNotNull( $fields );
 	}
 
 

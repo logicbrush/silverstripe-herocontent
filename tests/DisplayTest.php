@@ -36,7 +36,7 @@ class DisplayTest extends SapphireTest
 		$slide1->PageID = $page->ID;
 		$slide1->write();
 
-		$this->assertNotEmpty(trim($page->HeroContent()->value));
+		$this->assertNotEmpty( trim( $page->HeroContent()->value ) );
 	}
 
 
@@ -46,7 +46,7 @@ class DisplayTest extends SapphireTest
 	public function testGetCMSFields() {
 		$page = new DisplayTestPage();
 		$fields = $page->getCMSFields();
-		$this->assertNotNull($fields);
+		$this->assertNotNull( $fields );
 	}
 
 

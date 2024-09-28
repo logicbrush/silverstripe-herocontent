@@ -28,10 +28,10 @@ class WithHeroContentExtension extends DataExtension
 	 * @return unknown
 	 */
 	public function HeroContent() {
-		if ($this->owner->Slides()->exists()) {
-			return ArrayData::create([
+		if ( $this->owner->Slides()->exists() ) {
+			return ArrayData::create( [
 					'Slides' => $this->owner->Slides(),
-				])->renderWith('Slides');
+				] )->renderWith( 'Slides' );
 		}
 	}
 
@@ -41,10 +41,10 @@ class WithHeroContentExtension extends DataExtension
 	 * @Metrics( crap = 1 )
 	 * @param FieldList $fields
 	 */
-	public function updateCMSFields(FieldList $fields) {
+	public function updateCMSFields( FieldList $fields ) {
 
 		// Create the "Hero Content" tab.
-		$fields->insertAfter('Main', Tab::create($thisTabName = 'HeroContent'));
+		$fields->insertAfter( 'Main', Tab::create( $thisTabName = 'HeroContent' ) );
 
 		// Add the image field.
 		$fields->addFieldToTab(
@@ -54,22 +54,22 @@ class WithHeroContentExtension extends DataExtension
 				'Background Image'
 			)
 		);
-		$field->setAllowedFileCategories('image');
+		$field->setAllowedFileCategories( 'image' );
 
 		// Add the slide gridfield.
 		$slideFieldConfig = GridFieldConfig_RecordEditor::create();
-		$slideFieldConfig->addComponent(new GridFieldOrderableRows('SortOrder'));
-		$dataColumns = $slideFieldConfig->getComponentByType(GridFieldDataColumns::class);
-		$dataColumns->setFieldCasting([
+		$slideFieldConfig->addComponent( new GridFieldOrderableRows( 'SortOrder' ) );
+		$dataColumns = $slideFieldConfig->getComponentByType( GridFieldDataColumns::class );
+		$dataColumns->setFieldCasting( [
 				'Content' => 'HTMLText->RAW',
-			]);
+			] );
 		$slideField = GridField::create(
 			'Slides',
 			'Slides',
 			$this->owner->Slides(),
 			$slideFieldConfig
 		);
-		$fields->addFieldToTab("Root.{$thisTabName}", $slideField);
+		$fields->addFieldToTab( "Root.{$thisTabName}", $slideField );
 
 	}
 
