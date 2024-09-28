@@ -24,7 +24,7 @@ class WithHeroContentExtension extends DataExtension
 
 	/**
 	 *
-	 * @Metrics( crap = 2 )
+	 * @Metrics( crap = 2.03 )
 	 * @return unknown
 	 */
 	public function HeroContent() {
