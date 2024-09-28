@@ -33,13 +33,13 @@ class WithHeroContentExtension extends DataExtension
 					'Slides' => $this->owner->Slides(),
 				] )->renderWith( 'Slides' );
 		}
+		return null;
 	}
 
 
 	/**
 	 *
 	 * @Metrics( crap = 1 )
-	 * @param FieldList $fields
 	 */
 	public function updateCMSFields( FieldList $fields ) {
 
