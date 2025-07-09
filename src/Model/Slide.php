@@ -34,7 +34,7 @@ class Slide extends DataObject
 			$field = UploadField::create( 'Image', 'Image' )
 		);
 		$field->setFolderName( 'slides' );
-		$field->getValidator()->setAllowedMaxFileSize( 10485760 );
+		// $field->getValidator()->setAllowedMaxFileSize( 10485760 );
 
 		$fields->addFieldToTab(
 			'Root.Advanced',
