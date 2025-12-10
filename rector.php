@@ -12,6 +12,7 @@ use Rector\CodeQuality\Rector\If_\ExplicitBoolCompareRector;
 use Rector\Config\RectorConfig;
 use Rector\DeadCode\Rector\Property\RemoveUnusedPrivatePropertyRector;
 use Rector\DeadCode\Rector\StaticCall\RemoveParentCallWithoutParentRector;
+use Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRector;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
 
@@ -26,6 +27,7 @@ return static function ( RectorConfig $rectorConfig ): void {
 		] );
 
 	$rectorConfig->skip( [
+			AddOverrideAttributeToOverriddenMethodsRector::class,	
 			CompleteDynamicPropertiesRector::class,
 			ExplicitBoolCompareRector::class,
 			RemoveParentCallWithoutParentRector::class,

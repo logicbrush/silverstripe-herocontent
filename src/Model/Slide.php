@@ -63,36 +63,29 @@ class Slide extends DataObject {
 	 *
 	 * @Metrics( crap = 1 )
 	 */
-	#[Override]
+	public function getCMSFields() {
+		$fields = parent::getCMSFields();
 
-/**
- *
- */
-public function getCMSFields() {
-	$fields = parent::getCMSFields();
+		$fields->removeByName('SortOrder');
+		$fields->removeByName('PageID');
 
-	$fields->removeByName( 'SortOrder' );
-	$fields->removeByName( 'PageID' );
+		$fields->addFieldToTab(
+			'Root.Main',
+			$field = UploadField::create('Image', 'Image')
+		);
+		$field->setFolderName('slides');
+		// $field->getValidator()->setAllowedMaxFileSize( 10485760 );
 
-	$fields->addFieldToTab(
-		'Root.Main',
-		$field = UploadField::create( 'Image', 'Image' )
-	);
-	$field->setFolderName( 'slides' );
-	// $field->getValidator()->setAllowedMaxFileSize( 10485760 );
+		$fields->addFieldToTab(
+			'Root.Advanced',
+			$field = TextareaField::create(
+				'AdditionalHTML',
+				'Additional HTML'
+			)
+		);
+		$field->setRightTitle('You can add additional HTML code to the slide her.');
+		$field->setRows(10);
 
-	$fields->addFieldToTab(
-		'Root.Advanced',
-		$field = TextareaField::create(
-			'AdditionalHTML',
-			'Additional HTML'
-		)
-	);
-	$field->setRightTitle( 'You can add additional HTML code to the slide her.' );
-	$field->setRows( 10 );
-
-	return $fields;
-}
-
-
+		return $fields;
+	}
 }
