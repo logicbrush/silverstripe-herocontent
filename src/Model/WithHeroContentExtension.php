@@ -8,6 +8,9 @@
 
 namespace Logicbrush\HeroContent\Model;
 
+use SilverStripe\ORM\HasManyList;
+use Logicbrush\HeroContent\Tests\DisplayTestPage;
+use Page;
 use SilverStripe\AssetAdmin\Forms\UploadField;
 use SilverStripe\Assets\Image;
 use SilverStripe\Core\Extension;
@@ -19,6 +22,13 @@ use SilverStripe\Forms\Tab;
 use SilverStripe\Model\ArrayData;
 use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
 
+/**
+ *
+ * @property int $HeroImageID
+ * @method Image HeroImage()
+ * @method HasManyList<Slide> Slides()
+ * @extends Extension<(DisplayTestPage&static | Page&static)>
+ */
 class WithHeroContentExtension extends Extension
 {
 
@@ -28,9 +38,9 @@ class WithHeroContentExtension extends Extension
 	 * @return unknown
 	 */
 	public function HeroContent() {
-		if ( $this->owner->Slides()->exists() ) {
+		if ( $this->getOwner()->Slides()->exists() ) {
 			return ArrayData::create( [
-					'Slides' => $this->owner->Slides(),
+					'Slides' => $this->getOwner()->Slides(),
 				] )->renderWith( 'Slides' );
 		}
 		return null;
@@ -58,7 +68,7 @@ class WithHeroContentExtension extends Extension
 
 		// Add the slide gridfield.
 		$slideFieldConfig = GridFieldConfig_RecordEditor::create();
-		$slideFieldConfig->addComponent( new GridFieldOrderableRows( 'SortOrder' ) );
+		$slideFieldConfig->addComponent( GridFieldOrderableRows::create( 'SortOrder' ) );
 		$dataColumns = $slideFieldConfig->getComponentByType( GridFieldDataColumns::class );
 		$dataColumns->setFieldCasting( [
 				'Content' => 'HTMLText->RAW',
@@ -66,7 +76,7 @@ class WithHeroContentExtension extends Extension
 		$slideField = GridField::create(
 			'Slides',
 			'Slides',
-			$this->owner->Slides(),
+			$this->getOwner()->Slides(),
 			$slideFieldConfig
 		);
 		$fields->addFieldToTab( "Root.{$thisTabName}", $slideField );
