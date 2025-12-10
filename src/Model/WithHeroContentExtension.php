@@ -28,6 +28,7 @@ use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
  * @method Image HeroImage()
  * @method HasManyList<Slide> Slides()
  * @extends Extension<(DisplayTestPage&static | Page&static)>
+ * @extends Extension<((DisplayTestPage & static) | (Page & static))>
  */
 class WithHeroContentExtension extends Extension
 {

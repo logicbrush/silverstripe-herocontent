@@ -39,6 +39,7 @@ class Slide extends DataObject
 
 /**
  *
+ * @Metrics( crap = 1 )
  */
 public function getCMSFields() {
 	$fields = parent::getCMSFields();
