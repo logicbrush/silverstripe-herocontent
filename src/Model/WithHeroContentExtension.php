@@ -10,6 +10,7 @@ namespace Logicbrush\HeroContent\Model;
 
 use SilverStripe\AssetAdmin\Forms\UploadField;
 use SilverStripe\Assets\Image;
+use SilverStripe\Core\Extension;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
@@ -19,7 +20,7 @@ use SilverStripe\ORM\DataExtension;
 use SilverStripe\View\ArrayData;
 use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
 
-class WithHeroContentExtension extends DataExtension
+class WithHeroContentExtension extends Extension
 {
 
 	/**
