@@ -29,7 +29,7 @@
         <includePath>app/code</includePath>
         <env name="SS_DATABASE_CLASS" value="MySQLDatabase"/>
         <env name="SS_DATABASE_SERVER" value="127.0.0.1"/>
-        <env name="SS_DATABASE_NAME" value="silverstripe-blog-utils"/>
+        <env name="SS_DATABASE_NAME" value="silverstripe-herocontent"/>
         <env name="SS_DATABASE_USERNAME" value="root"/>
         <env name="SS_DATABASE_PASSWORD" value="root"/>
     </php>
