@@ -3,7 +3,7 @@
 
 <div id="rotate-slide-{$Slides.First.ID}" class="rotate">
 	<% loop $Slides %>
-	<div class="slide" style="
+	<section class="slide" style="
 		position: relative;
 		<% if $Image %>
 		background: url({$Image.FocusFill(1680,945).URL}) center center; 
@@ -20,7 +20,7 @@
 		<% if $AdditionalHTML %>
 		$AdditionalHTML
 		<% end_if %>
-	</div>
+	</section>
 	<% end_loop %>
 </div>
 
