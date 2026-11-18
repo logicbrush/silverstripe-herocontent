@@ -6,3 +6,7 @@ Page:
   extensions:
     - Logicbrush\HeroContent\Model\WithHeroContentExtension
     - Logicbrush\HeroContent\Model\WithAdditionalContentExtension
+
+SilverStripe\SiteConfig\SiteConfig:
+  extensions:
+    - Logicbrush\HeroContent\Model\ContactInfoExtension

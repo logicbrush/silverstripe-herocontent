@@ -50,6 +50,27 @@ wrap in content order and stack full width below 768px. These scoped rules
 are loaded from `client/dist/additional-content.css` by the template and
 do not change other Pico grids.
 
+## Contact information
+
+Run `dev/build?flush=1` after installation to add the `Contact info` settings
+tab. It provides formal name, office address, office phone, fax, mobile phone,
+and email fields, retaining the legacy SiteConfig field names and stored data.
+
+Use `[contact_info]` in rich-text content to show the name, address, office
+phone, fax, and email, or select entries with `include`:
+
+```text
+[contact_info include="phone"]
+[contact_info include="phone,email"]
+[contact_info include="address"]
+```
+
+Supported selections are `name`, `address`, `phone`, `fax`, and `email`.
+Selecting an address also includes the formal name. A single selection
+(except address) renders inline; multiple selections use the legacy vCard
+markup. Mobile phone remains a settings field, as in the original shortcode.
+Override `ContactInfo.ss` in your theme to customize the markup.
+
 ## Mobile navigation
 
 The optional off-canvas menu uses [a11y-dialog](https://a11y-dialog.netlify.app/)
