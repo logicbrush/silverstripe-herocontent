@@ -1,0 +1,92 @@
+<?php
+
+namespace Logicbrush\HeroContent\Model;
+
+use SilverStripe\Core\Extension;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\GridField\GridField;
+use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
+use SilverStripe\Forms\GridField\GridFieldDataColumns;
+use SilverStripe\Forms\GridField\GridFieldPageCount;
+use SilverStripe\Forms\GridField\GridFieldPaginator;
+use SilverStripe\ORM\GroupedList;
+use SilverStripe\ORM\HasManyList;
+use SilverStripe\View\ArrayData;
+use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
+
+/**
+ * This extension provides additional content blocks for the page,
+ * which can be arranged dynamically in the CMS.
+ *
+ * @method HasManyList<AdditionalContent> ContentBlocks()
+ * @extends Extension<Page&static>
+ */
+class WithAdditionalContentExtension extends Extension {
+	private static array $has_many = [
+		'ContentBlocks' => AdditionalContent::class . '.Page',
+	];
+
+	private static array $owns = [
+		'ContentBlocks',
+	];
+
+	/**
+	 * @return string|null
+	 */
+	public function AdditionalContent() {
+		$contentBlocks = $this->getOwner()->ContentBlocks();
+		if (!$contentBlocks->exists()) {
+			return null;
+		}
+
+		return ArrayData::create( [
+			'AdditionalContent' => $contentBlocks,
+		] )->renderWith( 'AdditionalContent' );
+	}
+
+	/**
+	 *
+	 * @Metrics( crap = 2, uncovered = true )
+	 */
+	public function getContentBlockGroups() {
+		return GroupedList::create( $this->getOwner()->ContentBlocks() );
+	}
+
+	/**
+	 *
+	 * @Metrics( crap = 2, uncovered = true )
+	 */
+	public function getContentBlockGroupsByStyle() {
+		return $this->getOwner()->ContentBlockGroups->GroupedBy( "Style" );
+	}
+
+	/**
+	 *
+	 * @Metrics( crap = 1 )
+	 */
+	public function updateCMSFields( FieldList $fields ) {
+		$config = GridFieldConfig_RecordEditor::create();
+		$config->addComponent( GridFieldOrderableRows::create( 'SortOrder' ) );
+		$config->removeComponentsByType( GridFieldPageCount::class );
+		$config->removeComponentsByType( GridFieldPaginator::class );
+		$dataColumns = $config->getComponentByType( GridFieldDataColumns::class );
+		$dataColumns->setFieldCasting( [
+			'GridColumnContent' => 'HTMLText->RAW',
+			'IconHTML' => 'HTMLText->RAW',
+		] );
+
+		$fields->addFieldToTab(
+			'Root.AdditionalContent',
+			GridField::create(
+				'ContentBlocks',
+				'Content Blocks',
+				$this->getOwner()->ContentBlocks(),
+				$config,
+			),
+		);
+	}
+
+	private static array $casting = [
+		'AdditionalContent' => 'HTMLText',
+	];
+}
