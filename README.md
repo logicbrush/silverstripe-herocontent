@@ -42,3 +42,37 @@ The module renders these by default with `AdditionalContent.ss`; copy that
 template into your theme to customize the output. The module preserves the
 existing `ContentBlock` database table and remaps stored legacy `ContentBlock`
 class names to `AdditionalContent` during `dev/build`.
+
+## Mobile navigation
+
+The optional off-canvas menu uses [a11y-dialog](https://a11y-dialog.netlify.app/)
+8.1.4 (MIT licensed, bundled locally), without jQuery. Include
+`MobileNavigationToggle` inside your header and `MobileNavigation` directly
+inside `body`, after your page content. Add `data-mobile-navigation-desktop`
+to the element containing your desktop navigation links:
+
+```ss
+<header>
+    <nav>
+        <ul data-mobile-navigation-desktop>
+            <% loop $Menu(1) %>
+                <li><a href="$Link">$MenuTitle.XML</a></li>
+            <% end_loop %>
+        </ul>
+        <% include MobileNavigationToggle %>
+    </nav>
+</header>
+<!-- Main content and footer -->
+<% include MobileNavigation %>
+```
+
+Below 1024px, the enhanced menu replaces the marked desktop links. It includes
+visible menu pages and their descendants, highlights the current page, and
+supports Escape, trapped keyboard focus, and focus restoration. Without
+JavaScript, desktop links remain available and the menu button stays hidden.
+The hamburger and close icons have visible MENU and CLOSE captions, accessible
+button labels, and visible keyboard focus indicators.
+The footer is unaffected. Override the three `MobileNavigation*.ss` includes
+in your theme to customize the markup; the module loads its CSS and JavaScript
+only when `MobileNavigation` is included and menu pages exist. Include each
+menu and toggle only once per page; the menu ID is `mobile-navigation`.
