@@ -1,0 +1,111 @@
+<?php
+
+namespace Logicbrush\HeroContent\Tests;
+
+use Logicbrush\HeroContent\Admin\VersionedSiteConfigAdmin;
+use SilverStripe\Core\Injector\Injector;
+use SilverStripe\Dev\FunctionalTest;
+use SilverStripe\ORM\DB;
+use SilverStripe\Security\SecurityToken;
+use SilverStripe\SiteConfig\SiteConfig;
+use SilverStripe\SiteConfig\SiteConfigLeftAndMain;
+use SilverStripe\Versioned\Versioned;
+use SilverStripe\View\Parsers\ShortcodeParser;
+
+class VersionedSiteConfigTest extends FunctionalTest
+{
+	public $usesDatabase = true;
+
+	protected function setUp(): void
+	{
+		parent::setUp();
+		$this->logInWithPermission('ADMIN');
+		Versioned::set_stage(Versioned::DRAFT);
+	}
+
+	public function testSettingsFormSavesDraftThenPublishes()
+	{
+		$config = SiteConfig::current_site_config();
+		$config->OfficePhone = '555-0100';
+		$config->write();
+		$config->publishSingle();
+		$originalVersion = (int) $config->Version;
+
+		$this->assertInstanceOf(VersionedSiteConfigAdmin::class, Injector::inst()->get(SiteConfigLeftAndMain::class));
+		$this->assertSame(200, $this->get('admin/settings')->getStatusCode());
+		$this->assertStringContainsString('Save draft', $this->content());
+		$this->assertStringContainsString('action_publish_siteconfig', $this->content());
+		$response = $this->submitForm('Form_EditForm', 'action_save_siteconfig', ['OfficePhone' => '555-0200']);
+		$this->assertSame(200, $response->getStatusCode());
+		$this->assertGreaterThan($originalVersion, (int) Versioned::get_by_stage(SiteConfig::class, Versioned::DRAFT)->byID($config->ID)->Version);
+		$this->assertSame('555-0100', Versioned::get_by_stage(SiteConfig::class, Versioned::LIVE)->byID($config->ID)->OfficePhone);
+
+		$liveOutput = Versioned::withVersionedMode(function () {
+			Versioned::set_stage(Versioned::LIVE);
+			return ShortcodeParser::get('default')->parse('[contact_info include="phone"]');
+		});
+		$this->assertStringContainsString('555-0100', $liveOutput);
+		$this->assertStringNotContainsString('555-0200', $liveOutput);
+
+		$this->get('admin/settings');
+		$response = $this->submitForm('Form_EditForm', 'action_publish_siteconfig', ['OfficePhone' => '555-0300']);
+		$this->assertSame(200, $response->getStatusCode());
+		$this->assertSame('555-0300', Versioned::get_by_stage(SiteConfig::class, Versioned::LIVE)->byID($config->ID)->OfficePhone);
+		$this->assertGreaterThanOrEqual(3, Versioned::get_all_versions(SiteConfig::class, $config->ID)->count());
+	}
+
+	public function testBuildMigratesLegacySettingsOnlyOnce()
+	{
+		$config = SiteConfig::current_site_config();
+		$config->OfficePhone = '555-0100';
+		$config->write();
+		DB::prepared_query('UPDATE "SiteConfig" SET "Version" = 0 WHERE "ID" = ?', [$config->ID]);
+		DB::prepared_query('DELETE FROM "SiteConfig_Live" WHERE "ID" = ?', [$config->ID]);
+		$config->flushCache();
+
+		ob_start();
+		try {
+			SiteConfig::singleton()->requireDefaultRecords();
+			$this->assertSame('555-0100', Versioned::get_by_stage(SiteConfig::class, Versioned::LIVE)->byID($config->ID)->OfficePhone);
+			$draft = Versioned::get_by_stage(SiteConfig::class, Versioned::DRAFT)->byID($config->ID);
+			$draft->OfficePhone = '555-0200';
+			$draft->write();
+			SiteConfig::singleton()->requireDefaultRecords();
+		} finally {
+			ob_end_clean();
+		}
+		$this->assertSame('555-0100', Versioned::get_by_stage(SiteConfig::class, Versioned::LIVE)->byID($config->ID)->OfficePhone);
+		$this->assertSame('555-0200', Versioned::get_by_stage(SiteConfig::class, Versioned::DRAFT)->byID($config->ID)->OfficePhone);
+	}
+
+	public function testUsersWithoutSettingsPermissionCannotPublish()
+	{
+		$config = SiteConfig::current_site_config();
+		$config->OfficePhone = '555-0100';
+		$config->write();
+		$config->publishSingle();
+		$this->logInWithPermission('CMS_ACCESS_LeftAndMain');
+		$this->get('admin/settings');
+		$response = $this->post('admin/settings/EditForm', [
+			'ID' => $config->ID,
+			'OfficePhone' => '555-0200',
+			'SecurityID' => SecurityToken::inst()->getValue(),
+			'action_publish_siteconfig' => 1,
+		]);
+		$this->assertSame(403, $response->getStatusCode());
+		$this->assertSame('555-0100', Versioned::get_by_stage(SiteConfig::class, Versioned::LIVE)->byID($config->ID)->OfficePhone);
+	}
+
+	public function testSettingsFormRejectsAnotherRecordId()
+	{
+		$config = SiteConfig::current_site_config();
+		$phone = $config->OfficePhone;
+		$this->get('admin/settings');
+		$response = $this->submitForm('Form_EditForm', 'action_save_siteconfig', [
+			'ID' => $config->ID + 1,
+			'OfficePhone' => '555-0200',
+		]);
+		$this->assertSame(400, $response->getStatusCode());
+		$this->assertSame($phone, Versioned::get_by_stage(SiteConfig::class, Versioned::DRAFT)->byID($config->ID)->OfficePhone);
+	}
+}

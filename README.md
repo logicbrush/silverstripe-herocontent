@@ -56,6 +56,14 @@ Run `dev/build?flush=1` after installation to add the `Contact info` settings
 tab. It provides formal name, office address, office phone, fax, mobile phone,
 and email fields, retaining the legacy SiteConfig field names and stored data.
 
+Site settings use Silverstripe Draft/Live versioning. **Save draft** records
+changes without updating the public site; **Publish** saves and publishes the
+settings and any owned records. Both actions require the existing
+`EDIT_SITECONFIG` permission; publishing also respects `canPublish()`.
+The first `dev/build` preserves existing settings on Live and starts their
+revision history. Later builds do not publish pending changes. This versions
+the entire SiteConfig record, not only its contact fields.
+
 Use `[contact_info]` in rich-text content to show the name, address, office
 phone, fax, and email, or select entries with `include`:
 
