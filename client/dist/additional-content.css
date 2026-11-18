@@ -1,0 +1,13 @@
+.grid.additional-content-grid {
+	grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 768px) {
+	.grid.additional-content-grid {
+		grid-template-columns: repeat(12, minmax(0, 1fr));
+	}
+
+	.additional-content-grid > .additional {
+		grid-column: span var(--additional-content-columns, 12);
+	}
+}

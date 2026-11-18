@@ -43,6 +43,13 @@ template into your theme to customize the output. The module preserves the
 existing `ContentBlock` database table and remaps stored legacy `ContentBlock`
 class names to `AdditionalContent` during `dev/build`.
 
+The default template retains Pico's `.container.grid` and gaps, extending it
+to 12 columns at 768px and wider. Each block's `Columns` value sets its span:
+`6` is half a row, `4` is one third, and `12` or `all` fills a row. Blocks
+wrap in content order and stack full width below 768px. These scoped rules
+are loaded from `client/dist/additional-content.css` by the template and
+do not change other Pico grids.
+
 ## Mobile navigation
 
 The optional off-canvas menu uses [a11y-dialog](https://a11y-dialog.netlify.app/)

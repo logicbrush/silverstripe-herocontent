@@ -12,6 +12,7 @@ use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\DatabaseAdmin;
 use SilverStripe\ORM\FieldType\DBVarchar;
 use SilverStripe\TagField\TagField;
+use SilverStripe\View\Parsers\HTMLValue;
 
 class ContentBlocksTestPage extends SiteTree
 {
@@ -56,6 +57,29 @@ class AdditionalContentTest extends SapphireTest
 
 		$this->assertSame(AdditionalContent::class, $mapping['ContentBlock']);
 		$this->assertSame('ContentBlock', DataObject::getSchema()->tableName(AdditionalContent::class));
+	}
+
+	public function testRendersColumnSpansInPicoGrid() {
+		$page = ContentBlocksTestPage::create();
+		$page->write();
+		foreach (['1', '6', '12', 'all'] as $columns) {
+			$page->ContentBlocks()->add(AdditionalContent::create([
+				'Content' => '<p>Grid content</p>',
+				'Columns' => $columns,
+				'CssID' => 'grid-block-' . $columns,
+				'Style' => 'grid-test',
+			]));
+		}
+
+		$html = HTMLValue::create((string) $page->AdditionalContent());
+		$grid = $html->query('//div[contains(concat(" ", normalize-space(@class), " "), " additional-content-grid ")]');
+		$this->assertSame(1, $grid->length);
+		$this->assertSame(4, $html->query('//div[contains(concat(" ", normalize-space(@class), " "), " additional-content-grid ")]/div')->length);
+		foreach (['1', '6', '12'] as $columns) {
+			$block = $html->query('//*[@id="grid-block-' . $columns . '"]')->item(0);
+			$this->assertSame('--additional-content-columns: ' . $columns, $block->getAttribute('style'));
+		}
+		$this->assertFalse($html->query('//*[@id="grid-block-all"]')->item(0)->hasAttribute('style'));
 	}
 
 	public function testEditFormLoadsStoredStyle() {
