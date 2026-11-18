@@ -17,6 +17,7 @@
 		"php": "^7.4||^8.0",
 		"silverstripe/cms": "^4.0||^5.0",
 		"silverstripe/asset-admin": "*",
+		"silverstripe/tagfield": "^2.0 || ^3.0",
 		"symbiote/silverstripe-gridfieldextensions": "*",
 		"jonom/focuspoint": "*"
 	},

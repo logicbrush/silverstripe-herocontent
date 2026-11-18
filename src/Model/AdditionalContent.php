@@ -2,9 +2,9 @@
 
 namespace Logicbrush\HeroContent\Model;
 
+use Logicbrush\HeroContent\Forms\SingleValueTagField;
 use Page;
 use SilverStripe\Assets\Image;
-use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\TextareaField;
 use SilverStripe\Forms\TextField;
 use SilverStripe\ORM\DataObject;
@@ -44,7 +44,7 @@ class AdditionalContent extends DataObject {
 	private static array $db = [
 		'Content' => 'HTMLText',
 		'Columns' => "Enum('all,12,11,10,9,8,7,6,5,4,3,2,1','all')",
-		'Style' => "Enum(',content-blocks-style-1,content-blocks-style-2,content-blocks-style-3,content-blocks-style-4','')",
+		'Style' => 'Varchar(50)',
 		'Icon' => 'Varchar(50)',
 		'CssID' => 'Varchar(25)',
 		'HTML' => 'Text',
@@ -92,8 +92,16 @@ class AdditionalContent extends DataObject {
 
 		$fields->insertAfter(
 			'Columns',
-			DropdownField::create( 'Style', 'Group Style', singleton( AdditionalContent::class )->dbObject( 'Style' )->enumValues() )
-			->setEmptyString( '' ),
+			SingleValueTagField::create(
+				'Style',
+				'Group Style',
+				AdditionalContent::get()->exclude( 'Style', '' ),
+				null,
+				'Style',
+			)
+				->setIsMultiple( false )
+				->setCanCreate( true )
+				->setShouldLazyLoad( true ),
 		);
 
 		$fields->insertBefore(
