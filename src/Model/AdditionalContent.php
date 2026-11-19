@@ -22,6 +22,7 @@ use SilverStripe\Versioned\Versioned;
  * @property ?string $Style
  * @property ?string $Icon
  * @property ?string $CssID
+ * @property ?string $AdditionalCSSClasses
  * @property ?string $HTML
  * @property int $SortOrder
  * @property int $PageID
@@ -47,6 +48,7 @@ class AdditionalContent extends DataObject {
 		'Style' => 'Varchar(50)',
 		'Icon' => 'Varchar(50)',
 		'CssID' => 'Varchar(25)',
+		'AdditionalCSSClasses' => 'Text',
 		'HTML' => 'Text',
 		'SortOrder' => 'Int',
 	];
@@ -89,6 +91,7 @@ class AdditionalContent extends DataObject {
 
 		$fields->removeByName( 'SortOrder' );
 		$fields->removeByName( 'PageID' );
+		$fields->removeByName( 'AdditionalCSSClasses' );
 
 		$fields->insertAfter(
 			'Columns',
@@ -107,6 +110,11 @@ class AdditionalContent extends DataObject {
 		$fields->insertBefore(
 			'Style',
 			TextField::create( 'Icon', 'Icon' ),
+		);
+		$fields->addFieldToTab(
+			'Root.Extra',
+			TextField::create( 'AdditionalCSSClasses', 'Additional CSS classes' )
+				->setDescription( 'Space-separated CSS class names for this content block\'s wrapper.' ),
 		);
 		$fields->addFieldToTab(
 			'Root.Extra',

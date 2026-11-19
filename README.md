@@ -50,6 +50,15 @@ wrap in content order and stack full width below 768px. These scoped rules
 are loaded from `client/dist/additional-content.css` by the template and
 do not change other Pico grids.
 
+Each content block's **Extra** tab includes **Additional CSS classes**,
+stored separately from its Group Style. Enter space-separated class names to
+style a block independently without splitting its group or changing its column
+span. The default template appends `$AdditionalCSSClasses.ATT` to the block's
+wrapper; update theme overrides of `AdditionalContent.ss` in the same way.
+The field follows the block's normal Draft/Live publishing workflow. Run
+`dev/build?flush=1` after adding it. Class names and their styling are supplied
+by the theme, not the module.
+
 ## Page CSS classes
 
 Run `dev/build?flush=1` after adding this feature. Every page's **Settings**

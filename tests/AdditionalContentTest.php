@@ -8,11 +8,13 @@ use Logicbrush\HeroContent\Forms\SingleValueTagField;
 use SilverStripe\CMS\Model\SiteTree;
 use SilverStripe\Dev\SapphireTest;
 use SilverStripe\Forms\Form;
+use SilverStripe\Forms\TextField;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\DatabaseAdmin;
 use SilverStripe\ORM\FieldType\DBVarchar;
 use SilverStripe\TagField\TagField;
 use SilverStripe\View\Parsers\HTMLValue;
+use SilverStripe\Versioned\Versioned;
 
 class ContentBlocksTestPage extends SiteTree
 {
@@ -102,5 +104,63 @@ class AdditionalContentTest extends SapphireTest
 		$form->loadDataFrom($block);
 		$this->assertSame([], $field->getValueArray());
 		$this->assertNull($field->getSchemaStateDefaults()['value']);
+	}
+
+	/**
+	 * @dataProvider blockClasses
+	 */
+	public function testSavesAndRendersClassesOnIndividualBlocks(string $classes) {
+		$page = ContentBlocksTestPage::create();
+		$page->write();
+		$block = AdditionalContent::create([
+			'Content' => '<h2>Section heading</h2>',
+			'Columns' => '6',
+			'Style' => 'class-test',
+			'CssID' => 'styled-block',
+			'Icon' => 'fa-star',
+		]);
+		$page->ContentBlocks()->add($block);
+		$form = Form::create(null, 'EditForm', $block->getCMSFields());
+		$this->assertInstanceOf(TextField::class, $form->Fields()->fieldByName('Root.Extra.AdditionalCSSClasses'));
+		$form->loadDataFrom($block);
+		$form->Fields()->dataFieldByName('AdditionalCSSClasses')->setValue($classes);
+		$form->saveInto($block);
+		$block->write();
+		$this->assertSame($classes, AdditionalContent::get()->byID($block->ID)->AdditionalCSSClasses);
+		$page->ContentBlocks()->add(AdditionalContent::create([
+			'Content' => '<p>Ordinary block</p>',
+			'Columns' => '6',
+			'Style' => 'class-test',
+			'CssID' => 'ordinary-block',
+		]));
+
+		$html = HTMLValue::create((string) $page->AdditionalContent());
+		$styled = $html->query('//*[@id="styled-block"]')->item(0);
+		$this->assertSame('additional with-icon typography ' . $classes, $styled->getAttribute('class'));
+		$this->assertFalse($styled->hasAttribute('onclick'));
+		$this->assertSame('--additional-content-columns: 6', $styled->getAttribute('style'));
+		$this->assertSame('additional typography', $html->query('//*[@id="ordinary-block"]')->item(0)->getAttribute('class'));
+		$this->assertSame(1, $html->query('//section[contains(concat(" ", normalize-space(@class), " "), " class-test ")]')->length);
+	}
+
+	public function blockClasses(): array {
+		return [
+			'multiple classes' => ['no-card text-center custom-section'],
+			'escaped attribute value' => ['custom" onclick="alert(1)'],
+		];
+	}
+
+	public function testBlockClassesRespectDraftAndLive() {
+		Versioned::withVersionedMode(function () {
+			Versioned::set_stage(Versioned::DRAFT);
+			$block = AdditionalContent::create(['AdditionalCSSClasses' => 'featured']);
+			$block->write();
+			$block->publishSingle();
+			$block->AdditionalCSSClasses = 'no-card text-center';
+			$block->write();
+
+			$this->assertSame('no-card text-center', Versioned::get_by_stage(AdditionalContent::class, Versioned::DRAFT)->byID($block->ID)->AdditionalCSSClasses);
+			$this->assertSame('featured', Versioned::get_by_stage(AdditionalContent::class, Versioned::LIVE)->byID($block->ID)->AdditionalCSSClasses);
+		});
 	}
 }
