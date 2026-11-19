@@ -6,6 +6,7 @@ Page:
   extensions:
     - Logicbrush\HeroContent\Model\WithHeroContentExtension
     - Logicbrush\HeroContent\Model\WithAdditionalContentExtension
+    - Logicbrush\HeroContent\Model\WithPageClassesExtension
 
 SilverStripe\SiteConfig\SiteConfig:
   extensions:

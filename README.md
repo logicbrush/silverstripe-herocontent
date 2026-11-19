@@ -50,6 +50,22 @@ wrap in content order and stack full width below 768px. These scoped rules
 are loaded from `client/dist/additional-content.css` by the template and
 do not change other Pico grids.
 
+## Page CSS classes
+
+Run `dev/build?flush=1` after adding this feature. Every page's **Settings**
+form includes an **Additional CSS classes** field. Enter space-separated
+class names, such as `service-page featured`. The field follows the page's
+normal Draft/Live publishing workflow and is not inherited by child pages.
+
+Append `$AdditionalCSSClasses.ATT` to your theme's body classes:
+
+```ss
+<body class="$ClassName $AdditionalCSSClasses.ATT">
+```
+
+Keep the attribute escaping; the module stores plain text and does not
+change the theme's markup or supply styles for these classes.
+
 ## Contact information
 
 Run `dev/build?flush=1` after installation to add the `Contact info` settings
