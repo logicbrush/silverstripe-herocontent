@@ -78,6 +78,42 @@ class VersionedSiteConfigTest extends FunctionalTest
 		$this->assertSame('555-0200', Versioned::get_by_stage(SiteConfig::class, Versioned::DRAFT)->byID($config->ID)->OfficePhone);
 	}
 
+	public function testSocialProfileFieldsSaveDraftThenPublish()
+	{
+		$config = SiteConfig::current_site_config();
+		$profiles = [
+			'TwitterID' => 'https://x.com/example',
+			'YouTubeID' => 'https://www.youtube.com/@example',
+			'InstagramID' => 'example',
+			'PinterestID' => 'example',
+		];
+		foreach ($profiles as $field => $value) {
+			$config->setField($field, 'original');
+		}
+		$config->write();
+		$config->publishSingle();
+
+		$this->get('admin/settings');
+		$response = $this->submitForm('Form_EditForm', 'action_save_siteconfig', $profiles);
+		$this->assertSame(200, $response->getStatusCode());
+		$draft = Versioned::get_by_stage(SiteConfig::class, Versioned::DRAFT)->byID($config->ID);
+		$live = Versioned::get_by_stage(SiteConfig::class, Versioned::LIVE)->byID($config->ID);
+		foreach ($profiles as $field => $value) {
+			$this->assertSame($value, $draft->getField($field));
+			$this->assertSame('original', $live->getField($field));
+		}
+
+		$this->get('admin/settings');
+		$response = $this->submitForm('Form_EditForm', 'action_publish_siteconfig', $profiles);
+		$this->assertSame(200, $response->getStatusCode());
+		$live = Versioned::get_by_stage(SiteConfig::class, Versioned::LIVE)->byID($config->ID);
+		foreach ($profiles as $field => $value) {
+			$this->assertSame($value, $live->getField($field));
+		}
+		$this->assertSame('https://x.com/example', $live->getTwitterURL());
+		$this->assertSame('https://www.youtube.com/@example', $live->getYouTubeURL());
+	}
+
 	public function testUsersWithoutSettingsPermissionCannotPublish()
 	{
 		$config = SiteConfig::current_site_config();

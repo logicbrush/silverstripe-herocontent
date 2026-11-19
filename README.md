@@ -79,6 +79,26 @@ Selecting an address also includes the formal name. A single selection
 markup. Mobile phone remains a settings field, as in the original shortcode.
 Override `ContactInfo.ss` in your theme to customize the markup.
 
+## Social profiles
+
+Site settings include a `Social profiles` tab for LinkedIn company, Facebook,
+GitHub, Twitter/X, YouTube, Instagram, and Pinterest profiles. Enter a profile
+ID or a full HTTP(S) URL. For YouTube, use a channel ID or a full URL for
+channels using @handles.
+
+Templates can use `$SiteConfig.LinkedInURL`, `$SiteConfig.FacebookURL`,
+`$SiteConfig.GitHubURL`, `$SiteConfig.TwitterURL`, `$SiteConfig.YouTubeURL`,
+`$SiteConfig.InstagramURL`, and `$SiteConfig.PinterestURL`; unset profiles
+return no URL. Twitter IDs retain the legacy `twitter.com` URL format;
+full `x.com` URLs are accepted unchanged. Discontinued Google+ is not included.
+
+The extension retains the legacy fields (`LinkedInID`, `FacebookID`,
+`GitHubID`, `TwitterID`, `YouTubeID`, `InstagramID`, and `PinterestID`) and
+stored values. Run `dev/build?flush=1` after installation, adding profiles, or
+moving the extension from application code. Publish Settings to make restored
+or changed profiles available on Live. The module does not add social link
+markup; render the desired links in your theme.
+
 ## Mobile navigation
 
 The optional off-canvas menu uses [a11y-dialog](https://a11y-dialog.netlify.app/)

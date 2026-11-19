@@ -12,6 +12,7 @@ SilverStripe\SiteConfig\SiteConfig:
     - SilverStripe\Versioned\Versioned
     - Logicbrush\HeroContent\Model\VersionedSiteConfigExtension
     - Logicbrush\HeroContent\Model\ContactInfoExtension
+    - Logicbrush\HeroContent\Model\SocialProfilesExtension
 
 SilverStripe\Core\Injector\Injector:
   SilverStripe\SiteConfig\SiteConfigLeftAndMain:
