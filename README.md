@@ -75,6 +75,26 @@ Append `$AdditionalCSSClasses.ATT` to your theme's body classes:
 Keep the attribute escaping; the module stores plain text and does not
 change the theme's markup or supply styles for these classes.
 
+## Page navigation settings
+
+Every page's **Settings** form includes:
+
+* **Menu icon** (`MenuIcon`, `Varchar(50)`) for icon CSS classes.
+* **Display menu link as a call to action** (`MenuLinkCallToAction`, `Boolean`).
+* **Hide in footer** (`HideInFooter`, `Boolean`).
+* **Show subpages in footer** (`DisplayChildrenInFooter`, `Boolean`).
+
+`WithPageNavigationExtension` adds these fields to `Page`, retaining their
+existing column names, types, and stored values. They follow the page's normal
+Draft/Live workflow. Run `dev/build?flush=1` after adding this feature to a
+project; moving identical declarations from application code does not move or
+rename the existing columns.
+
+Remove application-local declarations and duplicate Settings editors for these
+fields when adopting the extension. Keep project-specific menu queries and
+rendering in the application or theme. The module supplies the settings, not
+footer markup, icon fonts, or call-to-action styling.
+
 ## Contact information
 
 Run `dev/build?flush=1` after installation to add the `Contact info` settings
