@@ -79,6 +79,20 @@ Selecting an address also includes the formal name. A single selection
 markup. Mobile phone remains a settings field, as in the original shortcode.
 Override `ContactInfo.ss` in your theme to customize the markup.
 
+## Site logo
+
+Site settings provide a Logo image upload on the main tab, stored in the
+`logo` folder. The `SiteLogoExtension` retains the legacy `Logo` relation and
+`LogoID` values. Run `dev/build?flush=1` after adding this feature.
+
+Use `$SiteConfig.Logo` or image methods such as
+`$SiteConfig.Logo.ScaleWidth(256)` in your theme, with the site title as
+alternative text and a text fallback when no logo is selected. The module
+does not change your header template.
+
+**Save draft** keeps the logo selection in Draft. **Publish** publishes the
+settings and the owned logo image, making them available on Live.
+
 ## Social profiles
 
 Site settings include a `Social profiles` tab for LinkedIn company, Facebook,

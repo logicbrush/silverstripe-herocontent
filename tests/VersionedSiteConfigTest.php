@@ -3,6 +3,9 @@
 namespace Logicbrush\HeroContent\Tests;
 
 use Logicbrush\HeroContent\Admin\VersionedSiteConfigAdmin;
+use SilverStripe\AssetAdmin\Forms\UploadField;
+use SilverStripe\Assets\Dev\TestAssetStore;
+use SilverStripe\Assets\Image;
 use SilverStripe\Core\Injector\Injector;
 use SilverStripe\Dev\FunctionalTest;
 use SilverStripe\ORM\DB;
@@ -52,6 +55,47 @@ class VersionedSiteConfigTest extends FunctionalTest
 		$this->assertSame(200, $response->getStatusCode());
 		$this->assertSame('555-0300', Versioned::get_by_stage(SiteConfig::class, Versioned::LIVE)->byID($config->ID)->OfficePhone);
 		$this->assertGreaterThanOrEqual(3, Versioned::get_all_versions(SiteConfig::class, $config->ID)->count());
+	}
+
+	public function testLogoSavesAsDraftAndPublishesWithSettings()
+	{
+		TestAssetStore::activate('herocontent-site-logo-tests');
+		try {
+			$config = SiteConfig::current_site_config();
+			$config->write();
+			$config->publishSingle();
+			$logo = Image::create();
+			$logo->setFromString(
+				base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII='),
+				'logo/site-logo.png'
+			);
+			$logo->write();
+			$this->assertInstanceOf(UploadField::class, $config->getCMSFields()->fieldByName('Root.Main.Logo'));
+
+			$this->get('admin/settings');
+			$data = [
+				'ID' => $config->ID,
+				'Logo' => ['Files' => [$logo->ID]],
+				'SecurityID' => SecurityToken::inst()->getValue(),
+			];
+			$response = $this->post('admin/settings/EditForm', $data + ['action_save_siteconfig' => 1]);
+			$this->assertSame(200, $response->getStatusCode());
+			$draft = Versioned::get_by_stage(SiteConfig::class, Versioned::DRAFT)->byID($config->ID);
+			$live = Versioned::get_by_stage(SiteConfig::class, Versioned::LIVE)->byID($config->ID);
+			$this->assertSame((int) $logo->ID, (int) $draft->LogoID);
+			$this->assertSame(0, (int) $live->LogoID);
+			$this->assertFalse($logo->isPublished());
+
+			$this->get('admin/settings');
+			$response = $this->post('admin/settings/EditForm', $data + ['action_publish_siteconfig' => 1]);
+			$this->assertSame(200, $response->getStatusCode());
+			$live = Versioned::get_by_stage(SiteConfig::class, Versioned::LIVE)->byID($config->ID);
+			$this->assertSame((int) $logo->ID, (int) $live->LogoID);
+			$this->assertTrue($live->Logo()->isPublished());
+			$this->assertTrue($live->Logo()->exists());
+		} finally {
+			TestAssetStore::reset();
+		}
 	}
 
 	public function testBuildMigratesLegacySettingsOnlyOnce()
