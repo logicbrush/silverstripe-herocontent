@@ -16,6 +16,22 @@ class WithPageNavigationExtension extends DataExtension
 		'MenuLinkCallToAction' => 'Boolean',
 	];
 
+	public function MetaTags(string &$tagString): void
+	{
+		$priorityExcluded = $this->owner->hasField('Priority')
+			&& (int) $this->owner->getField('Priority') === -1;
+		$alreadyExcluded = preg_match(
+			'/<meta\b[^>]*\bname=["\']robots["\'][^>]*\bcontent=["\'][^"\']*noindex/i',
+			$tagString,
+		) === 1;
+
+		if ( !$this->owner->ShowInSearch || $priorityExcluded ) {
+			if ( !$alreadyExcluded ) {
+				$tagString .= "\n<meta name=\"robots\" content=\"noindex\">";
+			}
+		}
+	}
+
 	public function updateSettingsFields(FieldList $fields)
 	{
 		$fields->addFieldsToTab('Root.Settings', [
