@@ -14,7 +14,7 @@
 		<form action="$SearchAction.ATT" method="get" role="search" data-site-search-form>
 			<% include SiteSearchFields %>
 			<p id="$SearchHelpID.ATT" class="hc-site-search-help">
-				<%t Logicbrush\HeroContent.SEARCH_HELP 'Type at least 3 characters for suggestions. Use Up and Down to browse, and Enter or Right Arrow to open a focused result. Press Enter in the search field to see all results.' %>
+				<%t Logicbrush\HeroContent.SEARCH_HELP 'Type at least 3 characters for suggestions.' %>
 			</p>
 		</form>
 		<div id="$SearchSuggestionsID.ATT" class="hc-site-search-suggestions"
