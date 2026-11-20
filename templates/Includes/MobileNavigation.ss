@@ -17,6 +17,7 @@
 				<span class="hc-mobile-navigation-label"><%t Logicbrush\HeroContent.CLOSE 'Close' %></span>
 			</button>
 			<h2 id="mobile-navigation-title"><%t Logicbrush\HeroContent.MENU 'Menu' %></h2>
+			$SiteSearch('mobile')
 			<nav aria-labelledby="mobile-navigation-title">
 				<% include MobileNavigationItems Items=$Menu(1) %>
 			</nav>

@@ -95,6 +95,25 @@ fields when adopting the extension. Keep project-specific menu queries and
 rendering in the application or theme. The module supplies the settings, not
 footer markup, icon fonts, or call-to-action styling.
 
+## Site search
+
+The module adds a `Search` action to `PageController`, available at each page's
+`Search` URL. Add `$SiteSearch('header')` to the theme's header; the mobile
+navigation focuses its search field when opened. The field submits directly to
+the results page on Enter without autocomplete. Search results are limited to Live
+pages that have **Show in search** enabled and that the visitor can view.
+Every search term must match at least one of the page's title, menu title,
+meta description, or content. Search terms are applied through parameterized
+ORM filters. The shared search field label uses the site title from SiteConfig
+when configured. Desktop autocomplete shows up to five suggestions after
+three characters. Up and Down move focus through suggestions. Enter or Right
+Arrow opens the focused result; Enter in the field submits the search. The
+results page displays ten matches per page. Each inline
+suggestion is an article with a heading and optional description. Suggestions
+include decorative CMS page-type icon markup when available:
+an image URL or a CMS icon class. The module provides markup and behavior
+only; style the `hc-site-search` classes and supply any icon font in your theme.
+
 ## Contact information
 
 Run `dev/build?flush=1` after installation to add the `Contact info` settings
@@ -191,3 +210,20 @@ The footer is unaffected. Override the three `MobileNavigation*.ss` includes
 in your theme to customize the markup; the module loads its CSS and JavaScript
 only when `MobileNavigation` is included and menu pages exist. Include each
 menu and toggle only once per page; the menu ID is `mobile-navigation`.
+
+## Version history
+
+### [v1.1.0](https://github.com/logicbrush/silverstripe-herocontent/tree/v1.1.0) (2024-09-25)
+
+Added Silverstripe CMS 5 support while retaining CMS 4 support. Raised the
+minimum PHP version from 7.2 to 7.4.
+
+### [v1.0.1](https://github.com/logicbrush/silverstripe-herocontent/tree/v1.0.1) (2023-09-08)
+
+Lowered the minimum PHP version to 7.2. The release tag notes that PHP 7.2
+compatibility was not tested.
+
+### [v1.0.0](https://github.com/logicbrush/silverstripe-herocontent/tree/v1.0.0) (2023-09-08)
+
+Initial release for Silverstripe CMS 4, with per-page hero background images
+and optional rotating slides.

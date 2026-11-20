@@ -9,6 +9,10 @@ Page:
     - Logicbrush\HeroContent\Model\WithPageClassesExtension
     - Logicbrush\HeroContent\Model\WithPageNavigationExtension
 
+PageController:
+  extensions:
+    - Logicbrush\HeroContent\Controllers\PageSearchExtension
+
 SilverStripe\SiteConfig\SiteConfig:
   extensions:
     - SilverStripe\Versioned\Versioned
