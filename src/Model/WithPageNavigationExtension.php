@@ -50,10 +50,10 @@ class WithPageNavigationExtension extends DataExtension {
 
 
 	/**
-	 * @todo Document this public method.
-	 *
-	 * @param FieldList $fields
-	 */
+  * @todo Document this public method.
+  *
+  * @Metrics( crap = 1 )
+  */
 	public function updateSettingsFields( FieldList $fields ) {
 		$fields->addFieldsToTab( 'Root.Settings', [
 			TextField::create( 'MenuIcon', 'Menu icon' )

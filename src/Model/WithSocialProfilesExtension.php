@@ -32,11 +32,8 @@ class WithSocialProfilesExtension extends DataExtension {
 
 
 	/**
-	 * @todo Document this public method.
-	 *
-	 * @param FieldList $fields
-	 * @return void
-	 */
+  * @todo Document this public method.
+  */
 	public function updateCMSFields( FieldList $fields ): void {
 		$fields->addFieldsToTab( 'Root.SocialProfiles', [
 			TextField::create( 'LinkedInID', 'LinkedIn company profile' ),

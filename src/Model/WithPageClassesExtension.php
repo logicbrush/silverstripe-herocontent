@@ -23,10 +23,8 @@ class WithPageClassesExtension extends DataExtension {
 
 
 	/**
-	 * @todo Document this public method.
-	 *
-	 * @param FieldList $fields
-	 */
+  * @todo Document this public method.
+  */
 	public function updateSettingsFields( FieldList $fields ) {
 		$fields->addFieldToTab(
 			'Root.Settings',

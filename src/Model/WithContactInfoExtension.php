@@ -30,10 +30,8 @@ class WithContactInfoExtension extends DataExtension {
 
 
 	/**
-	 * @todo Document this public method.
-	 *
-	 * @param FieldList $fields
-	 */
+  * @todo Document this public method.
+  */
 	public function updateCMSFields( FieldList $fields ) {
 		$fields->addFieldsToTab( 'Root.ContactInfo', [
 			TextField::create( 'ContactName', 'Formal Name' ),

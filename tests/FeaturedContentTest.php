@@ -40,10 +40,8 @@ class FeaturedContentTest extends SapphireTest {
 	public $usesDatabase = true;
 
 	/**
-	 * @todo Document this public method.
-	 *
-	 * @return void
-	 */
+  * @todo Document this public method.
+  */
 	public function testImageWidthsCanBeConfigured(): void {
 		Config::nest();
 		try {

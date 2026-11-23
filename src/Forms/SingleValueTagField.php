@@ -16,10 +16,8 @@ use SilverStripe\TagField\TagField;
  */
 class SingleValueTagField extends TagField {
 	/**
-	 * @todo Document this public method.
-	 *
-	 * @param DataObjectInterface $record
-	 */
+  * @todo Document this public method.
+  */
 	public function loadFrom( DataObjectInterface $record ) {
 		$this->setValue( $record->getField( $this->getName() ) );
 	}
@@ -28,10 +26,8 @@ class SingleValueTagField extends TagField {
 
 
 	/**
-	 * @todo Document this public method.
-	 *
-	 * @param DataObjectInterface $record
-	 */
+  * @todo Document this public method.
+  */
 	public function saveInto( DataObjectInterface $record ) {
 		$values = $this->getValueArray();
 		$value = $values ? reset( $values ) : null;

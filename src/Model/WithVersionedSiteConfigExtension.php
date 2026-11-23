@@ -21,10 +21,8 @@ use SilverStripe\Versioned\Versioned;
  */
 class WithVersionedSiteConfigExtension extends DataExtension {
 	/**
-	 * @todo Document this public method.
-	 *
-	 * @param FieldList $actions
-	 */
+  * @todo Document this public method.
+  */
 	public function updateCMSActions( FieldList $actions ) {
 		$save = $actions->fieldByName( 'action_save_siteconfig' );
 		if ( !$save ) {
