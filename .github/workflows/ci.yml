@@ -13,27 +13,12 @@ jobs:
           - operating-system: 'ubuntu-latest'
             silverstripe-version: '5.0'
             php-version: '8.1'
-            phpunit-version: '9.5'
           - operating-system: 'ubuntu-latest'
             silverstripe-version: '5.0'
             php-version: '8.2'
-            phpunit-version: '9.5'
           - operating-system: 'ubuntu-latest'
             silverstripe-version: '5.0'
             php-version: '8.3'
-            phpunit-version: '9.5'
-          - operating-system: 'ubuntu-latest'
-            silverstripe-version: '6.0'
-            php-version: '8.3'
-            phpunit-version: '11.3'
-          - operating-system: 'ubuntu-latest'
-            silverstripe-version: '6.0'
-            php-version: '8.4'
-            phpunit-version: '11.3'
-          - operating-system: 'ubuntu-latest'
-            silverstripe-version: '6.0'
-            php-version: '8.5'
-            phpunit-version: '11.3'
   
     name: SS ${{ matrix.silverstripe-version }}, PHP ${{ matrix.php-version }}
     runs-on: ${{ matrix.operating-system }}
@@ -77,7 +62,7 @@ jobs:
           GIT_CONFIG_KEY_0: safe.directory
           GIT_CONFIG_VALUE_0: /app
         with:
-          command: update --with silverstripe/framework:^${{ matrix.silverstripe-version }} --with phpunit/phpunit:^${{ matrix.phpunit-version }}
+          command: update --with silverstripe/framework:^${{ matrix.silverstripe-version }}
           php_version: ${{ matrix.php-version }}
           php_extensions: intl
       - run: |
