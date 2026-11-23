@@ -28,8 +28,8 @@
 		"phpunit/phpunit": "^9.5",
 		"silverstripe/sqlite3": "*",
 		"logicbrush/metrics": "*",
-		"cmrcx/phptidy": "*",
-		"rector/rector": "^1.2"
+		"rector/rector": "^1.2",
+		"php-cs-fixer/shim": "^3.95.30"
 	},
 	"autoload": {
 		"psr-4": {

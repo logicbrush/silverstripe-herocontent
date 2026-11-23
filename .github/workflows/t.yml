@@ -45,8 +45,11 @@ jobs:
           find src -name "*.php" | xargs ./vendor/bin/metrics annotate ./coverage.xml
       - name: Tidy Source Code
         run: |
-          find tests -name "*.php" | xargs ./vendor/bin/phptidy.php replace
-          find src -name "*.php" | xargs ./vendor/bin/phptidy.php replace
+          mkdir -p build/caches
+          ./vendor/bin/php-cs-fixer fix \
+            --config=.php-cs-fixer.dist.php \
+            --path-mode=intersection \
+            src tests
       - name: Push Back Changes
         run: |
           git diff --exit-code src tests || ( \
