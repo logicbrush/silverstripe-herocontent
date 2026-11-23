@@ -13,7 +13,17 @@ jobs:
     runs-on: 'ubuntu-latest'
     steps:
       - uses: actions/checkout@v3
+      - name: Configure CI advisory ignores
+        run: |
+          jq --slurpfile ids .github/composer-advisory-ignores.json \
+          '.config.policy.advisories["ignore-id"] = $ids[0]' \
+          composer.json > composer-ci.json
       - uses: php-actions/composer@v6
+        env:
+          COMPOSER: composer-ci.json
+          GIT_CONFIG_COUNT: '1'
+          GIT_CONFIG_KEY_0: safe.directory
+          GIT_CONFIG_VALUE_0: /app
         with:
           command: update --with silverstripe/framework:^5.0
           php_version: 8.1
