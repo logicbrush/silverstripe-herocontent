@@ -28,6 +28,8 @@ jobs:
           command: update --with silverstripe/framework:^5.0
           php_version: 8.1
           php_extensions: xdebug intl
+      - name: Apply Rector
+        run: ./vendor/bin/rector process src tests
       - name: Generate Code Coverage
         run: |
           XDEBUG_MODE=coverage \
