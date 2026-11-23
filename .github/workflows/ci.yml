@@ -56,13 +56,17 @@ jobs:
             "PKSA-8tf6-2hv5-c6tq",
             "PKSA-jndv-7cgy-xwm3",
             "PKSA-vcdc-4796-kn58",
-            "PKSA-2t2m-vnwy-55q7"
+            "PKSA-2t2m-vnwy-55q7",
+            "PKSA-nksq-cxj8-zb32"
           ]' \
           '.config.policy.advisories["ignore-id"] = $ids' \
           composer.json > composer-ci.json
       - uses: php-actions/composer@v6
         env:
           COMPOSER: composer-ci.json
+          GIT_CONFIG_COUNT: '1'
+          GIT_CONFIG_KEY_0: safe.directory
+          GIT_CONFIG_VALUE_0: /app
         with:
           command: update --with silverstripe/framework:^${{ matrix.silverstripe-version }}
           php_version: ${{ matrix.php-version }}
