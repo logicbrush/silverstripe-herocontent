@@ -44,6 +44,7 @@ class WithHeroContentExtension extends DataExtension
 					'Slides' => $this->owner->Slides(),
 				])->renderWith('Slides');
 		}
+		return null;
 	}
 
 

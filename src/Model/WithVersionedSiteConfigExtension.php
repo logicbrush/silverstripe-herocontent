@@ -19,6 +19,7 @@ use SilverStripe\Versioned\Versioned;
 class WithVersionedSiteConfigExtension extends DataExtension
 {
 
+
 	/**
 	 *
 	 * @param FieldList $actions
@@ -28,12 +29,12 @@ class WithVersionedSiteConfigExtension extends DataExtension
 		if (!$save) {
 			return;
 		}
-		$save->setTitle(_t(__CLASS__ . '.SAVEDRAFT', 'Save draft'));
+		$save->setTitle(_t(self::class . '.SAVEDRAFT', 'Save draft'));
 		$save->removeExtraClass('btn-primary');
 		$save->addExtraClass('btn-secondary');
 		if ($this->owner->canPublish()) {
 			$actions->push(
-				FormAction::create('publish_siteconfig', _t(__CLASS__ . '.PUBLISH', 'Publish'))
+				FormAction::create('publish_siteconfig', _t(self::class . '.PUBLISH', 'Publish'))
 				->addExtraClass('btn-primary font-icon-rocket')
 			);
 		}

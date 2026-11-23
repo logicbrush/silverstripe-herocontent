@@ -71,8 +71,8 @@ class VersionedSiteConfigAdmin extends SiteConfigLeftAndMain
 						}
 					}, null, false, true);
 				$message = $publish
-				? _t(__CLASS__ . '.PUBLISHED', 'Site settings published.')
-				: _t(__CLASS__ . '.DRAFTSAVED', 'Draft saved. Publish to update the live site.');
+				? _t(self::class . '.PUBLISHED', 'Site settings published.')
+				: _t(self::class . '.DRAFTSAVED', 'Draft saved. Publish to update the live site.');
 				$this->getResponse()->addHeader('X-Status', rawurlencode($message));
 				return $this->getEditForm()->forTemplate();
 			});

@@ -28,6 +28,7 @@ class WithPageNavigationExtension extends DataExtension
 
 	/**
 	 *
+	 * @Metrics( crap = 30, uncovered = true )
 	 * @param unknown $tagString
 	 */
 	public function MetaTags(string &$tagString): void
@@ -39,12 +40,11 @@ class WithPageNavigationExtension extends DataExtension
 			$tagString,
 		) === 1;
 
-		if ( !$this->owner->ShowInSearch || $priorityExcluded ) {
-			if ( !$alreadyExcluded ) {
-				$tagString .= "\n<meta name=\"robots\" content=\"noindex\">";
-			}
+		if ( (!$this->owner->ShowInSearch || $priorityExcluded) && !$alreadyExcluded ) {
+			$tagString .= "\n<meta name=\"robots\" content=\"noindex\">";
 		}
 	}
+
 
 
 	/**
@@ -64,6 +64,7 @@ class WithPageNavigationExtension extends DataExtension
 
 	/**
 	 *
+	 * @Metrics( crap = 2, uncovered = true )
 	 * @return unknown
 	 */
 	public function FooterMenu(): ArrayList
@@ -74,6 +75,7 @@ class WithPageNavigationExtension extends DataExtension
 
 	/**
 	 *
+	 * @Metrics( crap = 12, uncovered = true )
 	 * @return unknown
 	 */
 	public function FooterMenuColumns(): ArrayList
@@ -97,6 +99,7 @@ class WithPageNavigationExtension extends DataExtension
 
 	/**
 	 *
+	 * @Metrics( crap = 12, uncovered = true )
 	 * @return unknown
 	 */
 	public function FooterChildren(): ArrayList
@@ -109,9 +112,7 @@ class WithPageNavigationExtension extends DataExtension
 			return $this->owner->getBlogPosts()
 			->filter('HideInFooter', false)
 			->limit(3)
-			->filterByCallback(static function (SiteTree $page): bool {
-					return $page->canView();
-				});
+			->filterByCallback(static fn(SiteTree $page): bool => $page->canView());
 		}
 
 		return $this->footerPages((int) $this->owner->ID);
@@ -120,6 +121,7 @@ class WithPageNavigationExtension extends DataExtension
 
 	/**
 	 *
+	 * @Metrics( crap = 2, uncovered = true )
 	 * @param int     $parentID
 	 * @return unknown
 	 */
@@ -131,9 +133,7 @@ class WithPageNavigationExtension extends DataExtension
 				'ParentID' => $parentID,
 				'HideInFooter' => false,
 			])
-		->filterByCallback(static function (SiteTree $page): bool {
-				return $page->canView();
-			});
+		->filterByCallback(static fn(SiteTree $page): bool => $page->canView());
 	}
 
 

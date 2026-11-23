@@ -25,6 +25,7 @@ class WithContactInfoExtension extends DataExtension
 		'Email' => 'Varchar(255)',
 	];
 
+
 	/**
 	 *
 	 * @param FieldList $fields

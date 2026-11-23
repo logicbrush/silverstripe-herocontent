@@ -46,6 +46,7 @@ class WithSiteLogoExtension extends DataExtension
 	}
 
 
+
 	/**
 	 *
 	 * @param FieldList $fields

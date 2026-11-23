@@ -33,7 +33,7 @@ class ContactInfoShortcode {
 				'fax' => 'OfficeFax',
 				'email' => 'Email',
 			] as $include => $field) {
-			if (isset($args['include']) && strpos((string) $args['include'], $include) === false) {
+			if (isset($args['include']) && !str_contains((string) $args['include'], $include)) {
 				continue;
 			}
 			$data[$field] = $config->getField($field);

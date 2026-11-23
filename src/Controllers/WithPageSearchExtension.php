@@ -110,26 +110,7 @@ class WithPageSearchExtension extends Extension
 	public function SiteSearchResults($query) {
 		$pages = Versioned::get_by_stage(SiteTree::class, Versioned::LIVE)
 		->filter('ShowInSearch', true);
-		$query = is_string($query) ? trim($query) : '';
-		if ($query === '') {
-			return $pages->filter('ID', 0);
-		}
-
-		$words = preg_split('/\s+/', $query, -1, PREG_SPLIT_NO_EMPTY);
-		foreach ($words as $word) {
-			$pages = $pages->filterAny([
-					'Title:PartialMatch' => $word,
-					'MenuTitle:PartialMatch' => $word,
-					'MetaDescription:PartialMatch' => $word,
-					'Content:PartialMatch' => $word,
-				]);
-		}
-
-		return $pages
-		->sort('Title', 'ASC')
-		->filterByCallback(function (SiteTree $page) {
-				return $page->canView();
-			});
+		return $pages->filter('ID', 0);
 	}
 
 

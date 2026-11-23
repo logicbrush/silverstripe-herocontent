@@ -17,6 +17,7 @@ use SilverStripe\TagField\TagField;
 class SingleValueTagField extends TagField
 {
 
+
 	/**
 	 *
 	 * @param DataObjectInterface $record
@@ -24,6 +25,7 @@ class SingleValueTagField extends TagField
 	public function loadFrom(DataObjectInterface $record) {
 		$this->setValue($record->getField($this->getName()));
 	}
+
 
 
 	/**

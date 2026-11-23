@@ -18,6 +18,7 @@ class WithPageClassesExtension extends DataExtension
 		'AdditionalCSSClasses' => 'Text',
 	];
 
+
 	/**
 	 *
 	 * @param FieldList $fields

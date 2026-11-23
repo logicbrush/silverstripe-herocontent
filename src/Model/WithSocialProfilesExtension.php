@@ -28,6 +28,7 @@ class WithSocialProfilesExtension extends DataExtension {
 		'PinterestID' => 'Varchar(255)',
 	];
 
+
 	/**
 	 *
 	 * @param FieldList $fields
