@@ -1,10 +1,10 @@
 <?php
+
 /**
  * src/Model/WithSiteLogoExtension.php
  *
  * @package default
  */
-
 
 namespace Logicbrush\HeroContent\Model;
 
@@ -14,8 +14,10 @@ use SilverStripe\Core\Config\Config;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\ORM\DataExtension;
 
-class WithSiteLogoExtension extends DataExtension
-{
+/**
+ * @todo Document this class.
+ */
+class WithSiteLogoExtension extends DataExtension {
 	private static int $logo_width = 256;
 
 	private static array $has_one = [
@@ -30,9 +32,8 @@ class WithSiteLogoExtension extends DataExtension
 	 *
 	 * @return unknown
 	 */
-	public function getLogoWidth(): int
-	{
-		return (int) Config::forClass(self::class)->get('logo_width');
+	public function getLogoWidth(): int {
+		return (int) Config::forClass( self::class )->get( 'logo_width' );
 	}
 
 
@@ -40,23 +41,24 @@ class WithSiteLogoExtension extends DataExtension
 	 *
 	 * @return unknown
 	 */
-	public function getLogoSrcSetWidth(): int
-	{
+	public function getLogoSrcSetWidth(): int {
 		return $this->getLogoWidth() * 2;
 	}
 
 
 
+
 	/**
+	 * @todo Document this public method.
 	 *
 	 * @param FieldList $fields
 	 */
-	public function updateCMSFields(FieldList $fields) {
+	public function updateCMSFields( FieldList $fields ) {
 		$fields->addFieldToTab(
 			'Root.Main',
-			UploadField::create('Logo', 'Logo')
-			->setFolderName('logo')
-			->setAllowedFileCategories('image')
+			UploadField::create( 'Logo', 'Logo' )
+			->setFolderName( 'logo' )
+			->setAllowedFileCategories( 'image' ),
 		);
 	}
 

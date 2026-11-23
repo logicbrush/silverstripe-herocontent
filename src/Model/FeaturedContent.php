@@ -1,10 +1,10 @@
 <?php
+
 /**
  * src/Model/FeaturedContent.php
  *
  * @package default
  */
-
 
 namespace Logicbrush\HeroContent\Model;
 

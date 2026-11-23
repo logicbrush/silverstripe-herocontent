@@ -1,4 +1,5 @@
 <?php
+
 /**
  * src/Model/WithSocialProfilesExtension.php
  *
@@ -29,20 +30,23 @@ class WithSocialProfilesExtension extends DataExtension {
 	];
 
 
+
 	/**
+	 * @todo Document this public method.
 	 *
 	 * @param FieldList $fields
+	 * @return void
 	 */
 	public function updateCMSFields( FieldList $fields ): void {
 		$fields->addFieldsToTab( 'Root.SocialProfiles', [
-				TextField::create( 'LinkedInID', 'LinkedIn company profile' ),
-				TextField::create( 'FacebookID', 'Facebook profile' ),
-				TextField::create( 'GitHubID', 'GitHub profile' ),
-				TextField::create( 'TwitterID', 'Twitter / X profile' ),
-				TextField::create( 'YouTubeID', 'YouTube channel' ),
-				TextField::create( 'InstagramID', 'Instagram profile' ),
-				TextField::create( 'PinterestID', 'Pinterest profile' ),
-			] );
+			TextField::create( 'LinkedInID', 'LinkedIn company profile' ),
+			TextField::create( 'FacebookID', 'Facebook profile' ),
+			TextField::create( 'GitHubID', 'GitHub profile' ),
+			TextField::create( 'TwitterID', 'Twitter / X profile' ),
+			TextField::create( 'YouTubeID', 'YouTube channel' ),
+			TextField::create( 'InstagramID', 'Instagram profile' ),
+			TextField::create( 'PinterestID', 'Pinterest profile' ),
+		] );
 		foreach ( array_keys( self::$db ) as $name ) {
 			$fields->dataFieldByName( $name )->setDescription( 'Enter a profile ID or a full HTTP(S) URL.' );
 		}
@@ -114,11 +118,9 @@ class WithSocialProfilesExtension extends DataExtension {
 
 
 	/**
-	 *
-	 * @param string  $field
-	 * @param string  $baseURL
-	 * @return unknown
-	 */
+  *
+  * @return unknown
+  */
 	private function profileURL( string $field, string $baseURL ): ?string {
 		$value = trim( (string) $this->getOwner()->getField( $field ) );
 		if ( $value === '' ) {

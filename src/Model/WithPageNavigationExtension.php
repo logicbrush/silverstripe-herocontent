@@ -1,10 +1,10 @@
 <?php
+
 /**
  * src/Model/WithPageNavigationExtension.php
  *
  * @package default
  */
-
 
 namespace Logicbrush\HeroContent\Model;
 
@@ -17,8 +17,10 @@ use SilverStripe\ORM\ArrayList;
 use SilverStripe\ORM\DataExtension;
 use SilverStripe\View\ArrayData;
 
-class WithPageNavigationExtension extends DataExtension
-{
+/**
+ * @todo Document this class.
+ */
+class WithPageNavigationExtension extends DataExtension {
 	private static array $db = [
 		'DisplayChildrenInFooter' => 'Boolean',
 		'HideInFooter' => 'Boolean',
@@ -31,34 +33,35 @@ class WithPageNavigationExtension extends DataExtension
 	 * @Metrics( crap = 30, uncovered = true )
 	 * @param unknown $tagString
 	 */
-	public function MetaTags(string &$tagString): void
-	{
-		$priorityExcluded = $this->owner->hasField('Priority')
-			&& (int) $this->owner->getField('Priority') === -1;
+	public function MetaTags( string &$tagString ): void {
+		$priorityExcluded = $this->owner->hasField( 'Priority' )
+			&& (int) $this->owner->getField( 'Priority' ) === -1;
 		$alreadyExcluded = preg_match(
 			'/<meta\b[^>]*\bname=["\']robots["\'][^>]*\bcontent=["\'][^"\']*noindex/i',
 			$tagString,
 		) === 1;
 
-		if ( (!$this->owner->ShowInSearch || $priorityExcluded) && !$alreadyExcluded ) {
+		if ( ( !$this->owner->ShowInSearch || $priorityExcluded ) && !$alreadyExcluded ) {
 			$tagString .= "\n<meta name=\"robots\" content=\"noindex\">";
 		}
 	}
 
 
 
+
 	/**
+	 * @todo Document this public method.
 	 *
 	 * @param FieldList $fields
 	 */
-	public function updateSettingsFields(FieldList $fields) {
-		$fields->addFieldsToTab('Root.Settings', [
-				TextField::create('MenuIcon', 'Menu icon')
-				->setDescription('Font Awesome classes, e.g. fa-solid fa-desktop.'),
-				CheckboxField::create('MenuLinkCallToAction', 'Display menu link as a call to action'),
-				CheckboxField::create('HideInFooter', 'Hide in footer'),
-				CheckboxField::create('DisplayChildrenInFooter', 'Show subpages in footer'),
-			]);
+	public function updateSettingsFields( FieldList $fields ) {
+		$fields->addFieldsToTab( 'Root.Settings', [
+			TextField::create( 'MenuIcon', 'Menu icon' )
+			->setDescription( 'Font Awesome classes, e.g. fa-solid fa-desktop.' ),
+			CheckboxField::create( 'MenuLinkCallToAction', 'Display menu link as a call to action' ),
+			CheckboxField::create( 'HideInFooter', 'Hide in footer' ),
+			CheckboxField::create( 'DisplayChildrenInFooter', 'Show subpages in footer' ),
+		] );
 	}
 
 
@@ -67,9 +70,8 @@ class WithPageNavigationExtension extends DataExtension
 	 * @Metrics( crap = 2, uncovered = true )
 	 * @return unknown
 	 */
-	public function FooterMenu(): ArrayList
-	{
-		return $this->footerPages(0);
+	public function FooterMenu(): ArrayList {
+		return $this->footerPages( 0 );
 	}
 
 
@@ -78,19 +80,18 @@ class WithPageNavigationExtension extends DataExtension
 	 * @Metrics( crap = 12, uncovered = true )
 	 * @return unknown
 	 */
-	public function FooterMenuColumns(): ArrayList
-	{
+	public function FooterMenuColumns(): ArrayList {
 		$pages = $this->FooterMenu();
 		$columns = ArrayList::create();
-		if (!$pages->exists()) {
+		if ( !$pages->exists() ) {
 			return $columns;
 		}
 
-		$columnSize = (int) ceil($pages->count() / 3);
-		foreach (array_chunk($pages->toArray(), $columnSize) as $column) {
-			$columns->push(ArrayData::create([
-						'Pages' => ArrayList::create($column),
-					]));
+		$columnSize = (int) ceil( $pages->count() / 3 );
+		foreach ( array_chunk( $pages->toArray(), $columnSize ) as $column ) {
+			$columns->push( ArrayData::create( [
+				'Pages' => ArrayList::create( $column ),
+			] ) );
 		}
 
 		return $columns;
@@ -102,38 +103,35 @@ class WithPageNavigationExtension extends DataExtension
 	 * @Metrics( crap = 12, uncovered = true )
 	 * @return unknown
 	 */
-	public function FooterChildren(): ArrayList
-	{
-		if (!$this->owner->DisplayChildrenInFooter) {
+	public function FooterChildren(): ArrayList {
+		if ( !$this->owner->DisplayChildrenInFooter ) {
 			return ArrayList::create();
 		}
 
-		if ($this->owner->hasMethod('getBlogPosts')) {
+		if ( $this->owner->hasMethod( 'getBlogPosts' ) ) {
 			return $this->owner->getBlogPosts()
-			->filter('HideInFooter', false)
-			->limit(3)
-			->filterByCallback(static fn(SiteTree $page): bool => $page->canView());
+			->filter( 'HideInFooter', false )
+			->limit( 3 )
+			->filterByCallback( static fn( SiteTree $page ): bool => $page->canView() );
 		}
 
-		return $this->footerPages((int) $this->owner->ID);
+		return $this->footerPages( (int) $this->owner->ID );
 	}
 
 
 	/**
-	 *
-	 * @Metrics( crap = 2, uncovered = true )
-	 * @param int     $parentID
-	 * @return unknown
-	 */
-	private function footerPages(int $parentID): ArrayList
-	{
+  *
+  * @Metrics( crap = 2, uncovered = true )
+  * @return unknown
+  */
+	private function footerPages( int $parentID ): ArrayList {
 		return Page::get()
-		->filterAny(['ShowInMenus' => true, 'ShowInSearch' => true])
-		->filter([
-				'ParentID' => $parentID,
-				'HideInFooter' => false,
-			])
-		->filterByCallback(static fn(SiteTree $page): bool => $page->canView());
+		->filterAny( ['ShowInMenus' => true, 'ShowInSearch' => true] )
+		->filter( [
+			'ParentID' => $parentID,
+			'HideInFooter' => false,
+		] )
+		->filterByCallback( static fn( SiteTree $page ): bool => $page->canView() );
 	}
 
 
