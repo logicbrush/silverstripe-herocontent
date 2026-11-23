@@ -298,7 +298,7 @@ menu and toggle only once per page; the menu ID is `mobile-navigation`.
 
 ## Version history
 
-### 2026.12 (In Progress)
+### 2026.12 (2026-11-23)
 
 - Dropped Silverstripe CMS 4 support; the module now requires CMS 5 and PHP 8.1
   or later.
