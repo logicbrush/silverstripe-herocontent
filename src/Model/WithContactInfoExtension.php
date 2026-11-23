@@ -1,4 +1,10 @@
 <?php
+/**
+ * src/Model/WithContactInfoExtension.php
+ *
+ * @package default
+ */
+
 
 namespace Logicbrush\HeroContent\Model;
 
@@ -19,15 +25,20 @@ class WithContactInfoExtension extends DataExtension
 		'Email' => 'Varchar(255)',
 	];
 
-	public function updateCMSFields(FieldList $fields)
-	{
+	/**
+	 *
+	 * @param FieldList $fields
+	 */
+	public function updateCMSFields(FieldList $fields) {
 		$fields->addFieldsToTab('Root.ContactInfo', [
-			TextField::create('ContactName', 'Formal Name'),
-			TextareaField::create('OfficeAddr', 'Office Address'),
-			TextField::create('OfficePhone', 'Office Phone'),
-			TextField::create('OfficeFax', 'Office Fax'),
-			TextField::create('MobilePhone', 'Mobile Phone'),
-			EmailField::create('Email', 'Email Address'),
-		]);
+				TextField::create('ContactName', 'Formal Name'),
+				TextareaField::create('OfficeAddr', 'Office Address'),
+				TextField::create('OfficePhone', 'Office Phone'),
+				TextField::create('OfficeFax', 'Office Fax'),
+				TextField::create('MobilePhone', 'Mobile Phone'),
+				EmailField::create('Email', 'Email Address'),
+			]);
 	}
+
+
 }

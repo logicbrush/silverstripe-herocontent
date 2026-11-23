@@ -1,4 +1,10 @@
 <?php
+/**
+ * src/Model/WithFeaturedContentExtension.php
+ *
+ * @package default
+ */
+
 
 namespace Logicbrush\HeroContent\Model;
 
@@ -31,6 +37,7 @@ class WithFeaturedContentExtension extends Extension {
 	];
 
 	/**
+	 *
 	 * @return string|null
 	 */
 	public function FeaturedContent() {
@@ -40,29 +47,35 @@ class WithFeaturedContentExtension extends Extension {
 		}
 
 		return ArrayData::create( [
-			'FeaturedContent' => $contentBlocks,
-		] )->renderWith( 'FeaturedContent' );
+				'FeaturedContent' => $contentBlocks,
+			] )->renderWith( 'FeaturedContent' );
 	}
+
 
 	/**
 	 *
 	 * @Metrics( crap = 2, uncovered = true )
+	 * @return unknown
 	 */
 	public function getContentBlockGroups() {
 		return GroupedList::create( $this->getOwner()->ContentBlocks() );
 	}
 
+
 	/**
 	 *
 	 * @Metrics( crap = 2, uncovered = true )
+	 * @return unknown
 	 */
 	public function getContentBlockGroupsByStyle() {
 		return $this->getOwner()->ContentBlockGroups->GroupedBy( "Style" );
 	}
 
+
 	/**
 	 *
 	 * @Metrics( crap = 1 )
+	 * @param FieldList $fields
 	 */
 	public function updateCMSFields( FieldList $fields ) {
 		$config = GridFieldConfig_RecordEditor::create();
@@ -71,9 +84,9 @@ class WithFeaturedContentExtension extends Extension {
 		$config->removeComponentsByType( GridFieldPaginator::class );
 		$dataColumns = $config->getComponentByType( GridFieldDataColumns::class );
 		$dataColumns->setFieldCasting( [
-			'GridColumnContent' => 'HTMLText->RAW',
-			'IconHTML' => 'HTMLText->RAW',
-		] );
+				'GridColumnContent' => 'HTMLText->RAW',
+				'IconHTML' => 'HTMLText->RAW',
+			] );
 
 		$fields->addFieldToTab(
 			'Root.FeaturedContent',
@@ -85,6 +98,7 @@ class WithFeaturedContentExtension extends Extension {
 			),
 		);
 	}
+
 
 	private static array $casting = [
 		'FeaturedContent' => 'HTMLText',

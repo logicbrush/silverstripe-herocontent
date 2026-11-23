@@ -1,4 +1,10 @@
 <?php
+/**
+ * src/Shortcodes/ContactInfoShortcode.php
+ *
+ * @package default
+ */
+
 
 namespace Logicbrush\HeroContent\Shortcodes;
 
@@ -8,20 +14,25 @@ use SilverStripe\SiteConfig\SiteConfig;
 use SilverStripe\View\ArrayData;
 use SilverStripe\View\SSViewer;
 
-class ContactInfoShortcode
-{
+class ContactInfoShortcode {
+
+	/**
+	 *
+	 * @param array   $args
+	 * @return unknown
+	 */
 	public static function render(array $args): string
 	{
 		$config = SiteConfig::current_site_config();
 		$data = [];
 		$count = 0;
 		foreach ([
-			'name' => 'ContactName',
-			'address' => 'OfficeAddr',
-			'phone' => 'OfficePhone',
-			'fax' => 'OfficeFax',
-			'email' => 'Email',
-		] as $include => $field) {
+				'name' => 'ContactName',
+				'address' => 'OfficeAddr',
+				'phone' => 'OfficePhone',
+				'fax' => 'OfficeFax',
+				'email' => 'Email',
+			] as $include => $field) {
 			if (isset($args['include']) && strpos((string) $args['include'], $include) === false) {
 				continue;
 			}
@@ -43,4 +54,6 @@ class ContactInfoShortcode
 
 		return (string) SSViewer::create('ContactInfo')->process(ArrayData::create($data));
 	}
+
+
 }

@@ -1,4 +1,10 @@
 <?php
+/**
+ * src/Controllers/WithPageSearchExtension.php
+ *
+ * @package default
+ */
+
 
 namespace Logicbrush\HeroContent\Controllers;
 
@@ -18,8 +24,12 @@ class WithPageSearchExtension extends Extension
 
 	private const SUGGESTION_LIMIT = 5;
 
-	public function SiteSearch($instance = 'header')
-	{
+	/**
+	 *
+	 * @param unknown $instance (optional)
+	 * @return unknown
+	 */
+	public function SiteSearch($instance = 'header') {
 		if (!is_string($instance) || !preg_match('/\A[a-zA-Z0-9_-]+\z/', $instance)) {
 			$instance = 'header';
 		}
@@ -28,19 +38,24 @@ class WithPageSearchExtension extends Extension
 		$query = $request ? $request->getVar('Search') : '';
 
 		return ArrayData::create([
-			'SearchAction' => $this->owner->Link('Search'),
-			'SearchClass' => 'hc-site-search--' . $instance,
-			'SearchInputID' => $instance . '-search',
-			'SearchSuggestionsID' => $instance . '-suggestions',
-			'SearchHelpID' => $instance . '-help',
-			'SearchValue' => is_string($query) ? $query : '',
-			'SearchSiteName' => rtrim(trim((string) $this->owner->SiteConfig()->Title), '.'),
-			'SearchAutocomplete' => $instance !== 'mobile',
-		])->renderWith($instance === 'mobile' ? 'Includes/MobileSiteSearch' : 'Includes/SiteSearch');
+				'SearchAction' => $this->owner->Link('Search'),
+				'SearchClass' => 'hc-site-search--' . $instance,
+				'SearchInputID' => $instance . '-search',
+				'SearchSuggestionsID' => $instance . '-suggestions',
+				'SearchHelpID' => $instance . '-help',
+				'SearchValue' => is_string($query) ? $query : '',
+				'SearchSiteName' => rtrim(trim((string) $this->owner->SiteConfig()->Title), '.'),
+				'SearchAutocomplete' => $instance !== 'mobile',
+			])->renderWith($instance === 'mobile' ? 'Includes/MobileSiteSearch' : 'Includes/SiteSearch');
 	}
 
-	public function Search(HTTPRequest $request)
-	{
+
+	/**
+	 *
+	 * @param HTTPRequest $request
+	 * @return unknown
+	 */
+	public function Search(HTTPRequest $request) {
 		$searchValue = $request->getVar('Search');
 		$query = is_string($searchValue) ? trim($searchValue) : '';
 		$results = $this->SiteSearchResults($query);
@@ -59,37 +74,42 @@ class WithPageSearchExtension extends Extension
 
 			$viewMoreLink = $hasMore
 				? $this->owner->Link('Search') . '?' . http_build_query(
-					['Search' => $query],
-					'',
-					'&',
-					PHP_QUERY_RFC3986
-				)
+				['Search' => $query],
+				'',
+				'&',
+				PHP_QUERY_RFC3986
+			)
 				: null;
 
 			return ArrayData::create([
-				'Results' => $suggestions,
-				'ViewMoreLink' => $viewMoreLink,
-			])->renderWith('Includes/SiteSearchResults');
+					'Results' => $suggestions,
+					'ViewMoreLink' => $viewMoreLink,
+				])->renderWith('Includes/SiteSearchResults');
 		}
 
 		$paginatedResults = PaginatedList::create($results, $request);
 		$paginatedResults->setPageLength(10);
 		$pageContent = ArrayData::create([
-			'Query' => $query,
-			'Results' => $paginatedResults,
-		])->renderWith('Includes/SiteSearchPage');
+				'Query' => $query,
+				'Results' => $paginatedResults,
+			])->renderWith('Includes/SiteSearchPage');
 
 		return $this->owner->customise([
-			'Title' => 'Search results',
-			'SearchPageContent' => $pageContent,
-			'SearchResultsPage' => true,
-		])->renderWith('Page');
+				'Title' => 'Search results',
+				'SearchPageContent' => $pageContent,
+				'SearchResultsPage' => true,
+			])->renderWith('Page');
 	}
 
-	public function SiteSearchResults($query)
-	{
+
+	/**
+	 *
+	 * @param unknown $query
+	 * @return unknown
+	 */
+	public function SiteSearchResults($query) {
 		$pages = Versioned::get_by_stage(SiteTree::class, Versioned::LIVE)
-			->filter('ShowInSearch', true);
+		->filter('ShowInSearch', true);
 		$query = is_string($query) ? trim($query) : '';
 		if ($query === '') {
 			return $pages->filter('ID', 0);
@@ -98,17 +118,19 @@ class WithPageSearchExtension extends Extension
 		$words = preg_split('/\s+/', $query, -1, PREG_SPLIT_NO_EMPTY);
 		foreach ($words as $word) {
 			$pages = $pages->filterAny([
-				'Title:PartialMatch' => $word,
-				'MenuTitle:PartialMatch' => $word,
-				'MetaDescription:PartialMatch' => $word,
-				'Content:PartialMatch' => $word,
-			]);
+					'Title:PartialMatch' => $word,
+					'MenuTitle:PartialMatch' => $word,
+					'MetaDescription:PartialMatch' => $word,
+					'Content:PartialMatch' => $word,
+				]);
 		}
 
 		return $pages
-			->sort('Title', 'ASC')
-			->filterByCallback(function (SiteTree $page) {
+		->sort('Title', 'ASC')
+		->filterByCallback(function (SiteTree $page) {
 				return $page->canView();
 			});
 	}
+
+
 }

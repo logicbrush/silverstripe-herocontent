@@ -1,4 +1,10 @@
 <?php
+/**
+ * tests/FeaturedContentTest.php
+ *
+ * @package default
+ */
+
 
 namespace Logicbrush\HeroContent\Tests;
 
@@ -24,10 +30,14 @@ class ContentBlocksTestPage extends SiteTree
 	];
 }
 
+
 class FeaturedContentTest extends SapphireTest
 {
 	public $usesDatabase = true;
 
+	/**
+	 *
+	 */
 	public function testImageWidthsCanBeConfigured(): void {
 		Config::nest();
 		try {
@@ -38,8 +48,14 @@ class FeaturedContentTest extends SapphireTest
 		} finally {
 			Config::unnest();
 		}
+
+
 	}
 
+
+	/**
+	 *
+	 */
 	public function testCanManageContentBlocks() {
 		$page = new ContentBlocksTestPage();
 		$page->write();
@@ -67,6 +83,10 @@ class FeaturedContentTest extends SapphireTest
 		$this->assertSame($existingBlockCount, FeaturedContent::get()->count());
 	}
 
+
+	/**
+	 *
+	 */
 	public function testLegacyClassNameIsMappedToNamespacedModel() {
 		$mapping = DatabaseAdmin::config()->get('classname_value_remapping');
 
@@ -75,6 +95,10 @@ class FeaturedContentTest extends SapphireTest
 		$this->assertSame('ContentBlock', DataObject::getSchema()->tableName(FeaturedContent::class));
 	}
 
+
+	/**
+	 *
+	 */
 	public function testEditFormLoadsStoredStyle() {
 		$block = FeaturedContent::create(['Style' => 'existing-style']);
 		$block->write();
@@ -97,19 +121,22 @@ class FeaturedContentTest extends SapphireTest
 		$this->assertNull($field->getSchemaStateDefaults()['value']);
 	}
 
+
 	/**
+	 *
 	 * @dataProvider blockClasses
+	 * @param string  $classes
 	 */
 	public function testSavesAndRendersClassesOnIndividualBlocks(string $classes) {
 		$page = ContentBlocksTestPage::create();
 		$page->write();
 		$block = FeaturedContent::create([
-			'Content' => '<h2>Section heading</h2>',
-			'Columns' => '6',
-			'Style' => 'class-test',
-			'CssID' => 'styled-block',
-			'Icon' => 'fa-star',
-		]);
+				'Content' => '<h2>Section heading</h2>',
+				'Columns' => '6',
+				'Style' => 'class-test',
+				'CssID' => 'styled-block',
+				'Icon' => 'fa-star',
+			]);
 		$page->ContentBlocks()->add($block);
 		$form = Form::create(null, 'EditForm', $block->getCMSFields());
 		$this->assertInstanceOf(TextField::class, $form->Fields()->fieldByName('Root.Extra.AdditionalCSSClasses'));
@@ -119,11 +146,11 @@ class FeaturedContentTest extends SapphireTest
 		$block->write();
 		$this->assertSame($classes, FeaturedContent::get()->byID($block->ID)->AdditionalCSSClasses);
 		$page->ContentBlocks()->add(FeaturedContent::create([
-			'Content' => '<p>Ordinary block</p>',
-			'Columns' => '6',
-			'Style' => 'class-test',
-			'CssID' => 'ordinary-block',
-		]));
+					'Content' => '<p>Ordinary block</p>',
+					'Columns' => '6',
+					'Style' => 'class-test',
+					'CssID' => 'ordinary-block',
+				]));
 
 		$html = HTMLValue::create((string) $page->FeaturedContent());
 		$styled = $html->query('//*[@id="styled-block"]')->item(0);
@@ -134,6 +161,11 @@ class FeaturedContentTest extends SapphireTest
 		$this->assertSame(1, $html->query('//section[contains(concat(" ", normalize-space(@class), " "), " class-test ")]')->length);
 	}
 
+
+	/**
+	 *
+	 * @return unknown
+	 */
 	public function blockClasses(): array {
 		return [
 			'multiple classes' => ['no-card text-center custom-section'],
@@ -141,17 +173,23 @@ class FeaturedContentTest extends SapphireTest
 		];
 	}
 
+
+	/**
+	 *
+	 */
 	public function testBlockClassesRespectDraftAndLive() {
 		Versioned::withVersionedMode(function () {
-			Versioned::set_stage(Versioned::DRAFT);
-			$block = FeaturedContent::create(['AdditionalCSSClasses' => 'featured']);
-			$block->write();
-			$block->publishSingle();
-			$block->AdditionalCSSClasses = 'no-card text-center';
-			$block->write();
+				Versioned::set_stage(Versioned::DRAFT);
+				$block = FeaturedContent::create(['AdditionalCSSClasses' => 'featured']);
+				$block->write();
+				$block->publishSingle();
+				$block->AdditionalCSSClasses = 'no-card text-center';
+				$block->write();
 
-			$this->assertSame('no-card text-center', Versioned::get_by_stage(FeaturedContent::class, Versioned::DRAFT)->byID($block->ID)->AdditionalCSSClasses);
-			$this->assertSame('featured', Versioned::get_by_stage(FeaturedContent::class, Versioned::LIVE)->byID($block->ID)->AdditionalCSSClasses);
-		});
+				$this->assertSame('no-card text-center', Versioned::get_by_stage(FeaturedContent::class, Versioned::DRAFT)->byID($block->ID)->AdditionalCSSClasses);
+				$this->assertSame('featured', Versioned::get_by_stage(FeaturedContent::class, Versioned::LIVE)->byID($block->ID)->AdditionalCSSClasses);
+			});
 	}
+
+
 }

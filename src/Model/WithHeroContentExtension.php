@@ -24,9 +24,14 @@ class WithHeroContentExtension extends DataExtension
 {
 	private static int $hero_image_width = 2400;
 
+	/**
+	 *
+	 * @return unknown
+	 */
 	public function getHeroImageWidth(): int {
 		return (int) Config::forClass(self::class)->get('hero_image_width');
 	}
+
 
 	/**
 	 *

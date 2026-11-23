@@ -1,4 +1,10 @@
 <?php
+/**
+ * src/Model/FeaturedContent.php
+ *
+ * @package default
+ */
+
 
 namespace Logicbrush\HeroContent\Model;
 
@@ -83,17 +89,28 @@ class FeaturedContent extends DataObject {
 
 	private static string $default_sort = 'SortOrder ASC';
 
+	/**
+	 *
+	 * @return unknown
+	 */
 	public function getImageWidth(): int {
 		return (int) self::config()->get( 'image_width' );
 	}
 
+
+	/**
+	 *
+	 * @return unknown
+	 */
 	public function getImageSrcSetWidth(): int {
 		return $this->getImageWidth() * 2;
 	}
 
+
 	/**
 	 *
 	 * @Metrics( crap = 2, uncovered = true )
+	 * @return unknown
 	 */
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
@@ -111,9 +128,9 @@ class FeaturedContent extends DataObject {
 				null,
 				'Style',
 			)
-				->setIsMultiple( false )
-				->setCanCreate( true )
-				->setShouldLazyLoad( true ),
+			->setIsMultiple( false )
+			->setCanCreate( true )
+			->setShouldLazyLoad( true ),
 		);
 
 		$fields->insertBefore(
@@ -123,7 +140,7 @@ class FeaturedContent extends DataObject {
 		$fields->addFieldToTab(
 			'Root.Extra',
 			TextField::create( 'AdditionalCSSClasses', 'Additional CSS classes' )
-				->setDescription( 'Space-separated CSS class names for this content block\'s wrapper.' ),
+			->setDescription( 'Space-separated CSS class names for this content block\'s wrapper.' ),
 		);
 		$fields->addFieldToTab(
 			'Root.Extra',
@@ -134,9 +151,11 @@ class FeaturedContent extends DataObject {
 		return $fields;
 	}
 
+
 	/**
 	 *
 	 * @Metrics( crap = 2, uncovered = true )
+	 * @return unknown
 	 */
 	public function IsFirstBlockInStyle() {
 		$value = $this->Style != self::config()->get( 'last_style' );
@@ -145,9 +164,11 @@ class FeaturedContent extends DataObject {
 		return $value;
 	}
 
+
 	/**
 	 *
 	 * @Metrics( crap = 20, uncovered = true )
+	 * @return unknown
 	 */
 	public function HasIcons() {
 		foreach ( $this->Page()->ContentBlocks() as $block ) {
@@ -161,9 +182,11 @@ class FeaturedContent extends DataObject {
 		return null;
 	}
 
+
 	/**
 	 *
 	 * @Metrics( crap = 6, uncovered = true )
+	 * @return unknown
 	 */
 	public function getIconHTML() {
 		if ( ! $this->Icon ) {
@@ -173,9 +196,11 @@ class FeaturedContent extends DataObject {
 		return DBField::create_field( 'HTMLText', '<span class="fa-icon ' . $this->Icon . '" aria-hidden="true"></span>' );
 	}
 
+
 	/**
 	 *
 	 * @Metrics( crap = 2, uncovered = true )
+	 * @return unknown
 	 */
 	public function GridColumnContent() {
 		return str_replace(
@@ -184,4 +209,6 @@ class FeaturedContent extends DataObject {
 			(string) $this->Content,
 		);
 	}
+
+
 }

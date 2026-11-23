@@ -1,4 +1,10 @@
 <?php
+/**
+ * tests/ContactInfoShortcodeTest.php
+ *
+ * @package default
+ */
+
 
 namespace Logicbrush\HeroContent\Tests;
 
@@ -12,23 +18,29 @@ class ContactInfoShortcodeTest extends SapphireTest
 {
 	public $usesDatabase = true;
 
+	/**
+	 *
+	 */
 	protected function setUp(): void
 	{
 		parent::setUp();
 		$config = SiteConfig::current_site_config();
 		$config->update([
-			'ContactName' => 'Example & Co',
-			'OfficeAddr' => "123 Main Street\nSuite <2>",
-			'OfficePhone' => '555-0100',
-			'OfficeFax' => '555-0101',
-			'MobilePhone' => '555-0102',
-			'Email' => 'hello@example.com',
-		]);
+				'ContactName' => 'Example & Co',
+				'OfficeAddr' => "123 Main Street\nSuite <2>",
+				'OfficePhone' => '555-0100',
+				'OfficeFax' => '555-0101',
+				'MobilePhone' => '555-0102',
+				'Email' => 'hello@example.com',
+			]);
 		$config->write();
 	}
 
-	public function testPhoneShortcodeRendersInlineThroughRichText()
-	{
+
+	/**
+	 *
+	 */
+	public function testPhoneShortcodeRendersInlineThroughRichText() {
 		$output = DBField::create_field('HTMLText', '<p>Call [contact_info include="phone"] today.</p>')->forTemplate();
 		$html = HTMLValue::create($output);
 		$this->assertSame(1, $html->query('//p/span[@class="tel"]/span[@class="value"]')->length);
@@ -38,8 +50,11 @@ class ContactInfoShortcodeTest extends SapphireTest
 		$this->assertStringNotContainsString('contact_info', $output);
 	}
 
-	public function testAddressIncludesNameAndEscapesHtml()
-	{
+
+	/**
+	 *
+	 */
+	public function testAddressIncludesNameAndEscapesHtml() {
 		$output = ShortcodeParser::get('default')->parse('[contact_info include="address"]');
 		$html = HTMLValue::create($output);
 		$this->assertSame(1, $html->query('//div[@class="vcard"]/div[@class="fn"]')->length);
@@ -49,8 +64,11 @@ class ContactInfoShortcodeTest extends SapphireTest
 		$this->assertStringNotContainsString('555-0100', $output);
 	}
 
-	public function testFullAndSelectedContactDetails()
-	{
+
+	/**
+	 *
+	 */
+	public function testFullAndSelectedContactDetails() {
 		$parser = ShortcodeParser::get('default');
 		$html = HTMLValue::create($parser->parse('[contact_info]'));
 		$this->assertSame(2, $html->query('//div[@class="vcard"]/div[@class="tel"]')->length);
@@ -64,8 +82,11 @@ class ContactInfoShortcodeTest extends SapphireTest
 		$this->assertStringNotContainsString('Example', $output);
 	}
 
-	public function testEmptyValuesAndEscaping()
-	{
+
+	/**
+	 *
+	 */
+	public function testEmptyValuesAndEscaping() {
 		$config = SiteConfig::current_site_config();
 		$config->OfficePhone = '<script>alert(1)</script>';
 		$config->Email = '';
@@ -76,8 +97,11 @@ class ContactInfoShortcodeTest extends SapphireTest
 		$this->assertStringContainsString('&lt;script&gt;', $output);
 	}
 
-	public function testSettingsExposeLegacyContactFields()
-	{
+
+	/**
+	 *
+	 */
+	public function testSettingsExposeLegacyContactFields() {
 		$config = SiteConfig::current_site_config();
 		$fields = $config->getCMSFields();
 		foreach (['ContactName', 'OfficeAddr', 'OfficePhone', 'OfficeFax', 'MobilePhone', 'Email'] as $name) {
@@ -85,4 +109,6 @@ class ContactInfoShortcodeTest extends SapphireTest
 		}
 		$this->assertSame('555-0100', $config->OfficePhone);
 	}
+
+
 }

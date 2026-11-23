@@ -1,4 +1,10 @@
 <?php
+/**
+ * src/Forms/SingleValueTagField.php
+ *
+ * @package default
+ */
+
 
 namespace Logicbrush\HeroContent\Forms;
 
@@ -10,13 +16,21 @@ use SilverStripe\TagField\TagField;
  */
 class SingleValueTagField extends TagField
 {
-	public function loadFrom(DataObjectInterface $record)
-	{
+
+	/**
+	 *
+	 * @param DataObjectInterface $record
+	 */
+	public function loadFrom(DataObjectInterface $record) {
 		$this->setValue($record->getField($this->getName()));
 	}
 
-	public function saveInto(DataObjectInterface $record)
-	{
+
+	/**
+	 *
+	 * @param DataObjectInterface $record
+	 */
+	public function saveInto(DataObjectInterface $record) {
 		$values = $this->getValueArray();
 		$value = $values ? reset($values) : null;
 
@@ -26,4 +40,6 @@ class SingleValueTagField extends TagField
 
 		$record->setField($this->getName(), $value);
 	}
+
+
 }

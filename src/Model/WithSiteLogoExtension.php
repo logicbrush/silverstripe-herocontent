@@ -1,4 +1,10 @@
 <?php
+/**
+ * src/Model/WithSiteLogoExtension.php
+ *
+ * @package default
+ */
+
 
 namespace Logicbrush\HeroContent\Model;
 
@@ -20,23 +26,38 @@ class WithSiteLogoExtension extends DataExtension
 		'Logo',
 	];
 
+	/**
+	 *
+	 * @return unknown
+	 */
 	public function getLogoWidth(): int
 	{
 		return (int) Config::forClass(self::class)->get('logo_width');
 	}
 
+
+	/**
+	 *
+	 * @return unknown
+	 */
 	public function getLogoSrcSetWidth(): int
 	{
 		return $this->getLogoWidth() * 2;
 	}
 
-	public function updateCMSFields(FieldList $fields)
-	{
+
+	/**
+	 *
+	 * @param FieldList $fields
+	 */
+	public function updateCMSFields(FieldList $fields) {
 		$fields->addFieldToTab(
 			'Root.Main',
 			UploadField::create('Logo', 'Logo')
-				->setFolderName('logo')
-				->setAllowedFileCategories('image')
+			->setFolderName('logo')
+			->setAllowedFileCategories('image')
 		);
 	}
+
+
 }

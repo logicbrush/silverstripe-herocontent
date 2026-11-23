@@ -1,4 +1,10 @@
 <?php
+/**
+ * tests/VersionedSiteConfigTest.php
+ *
+ * @package default
+ */
+
 
 namespace Logicbrush\HeroContent\Tests;
 
@@ -15,6 +21,9 @@ class VersionedSiteConfigTest extends FunctionalTest
 {
 	public $usesDatabase = true;
 
+	/**
+	 *
+	 */
 	protected function setUp(): void
 	{
 		parent::setUp();
@@ -22,8 +31,12 @@ class VersionedSiteConfigTest extends FunctionalTest
 		Versioned::set_stage(Versioned::DRAFT);
 	}
 
-	public function testSettingsFormSavesDraftThenPublishes()
-	{
+
+	/**
+	 *
+	 * @return unknown
+	 */
+	public function testSettingsFormSavesDraftThenPublishes() {
 		$config = SiteConfig::current_site_config();
 		$config->OfficePhone = '555-0100';
 		$config->write();
@@ -40,9 +53,9 @@ class VersionedSiteConfigTest extends FunctionalTest
 		$this->assertSame('555-0100', Versioned::get_by_stage(SiteConfig::class, Versioned::LIVE)->byID($config->ID)->OfficePhone);
 
 		$liveOutput = Versioned::withVersionedMode(function () {
-			Versioned::set_stage(Versioned::LIVE);
-			return ShortcodeParser::get('default')->parse('[contact_info include="phone"]');
-		});
+				Versioned::set_stage(Versioned::LIVE);
+				return ShortcodeParser::get('default')->parse('[contact_info include="phone"]');
+			});
 		$this->assertStringContainsString('555-0100', $liveOutput);
 		$this->assertStringNotContainsString('555-0200', $liveOutput);
 
@@ -53,8 +66,11 @@ class VersionedSiteConfigTest extends FunctionalTest
 		$this->assertGreaterThanOrEqual(3, Versioned::get_all_versions(SiteConfig::class, $config->ID)->count());
 	}
 
-	public function testBuildMigratesLegacySettingsOnlyOnce()
-	{
+
+	/**
+	 *
+	 */
+	public function testBuildMigratesLegacySettingsOnlyOnce() {
 		$config = SiteConfig::current_site_config();
 		$config->OfficePhone = '555-0100';
 		$config->write();
@@ -73,12 +89,17 @@ class VersionedSiteConfigTest extends FunctionalTest
 		} finally {
 			ob_end_clean();
 		}
+
+
 		$this->assertSame('555-0100', Versioned::get_by_stage(SiteConfig::class, Versioned::LIVE)->byID($config->ID)->OfficePhone);
 		$this->assertSame('555-0200', Versioned::get_by_stage(SiteConfig::class, Versioned::DRAFT)->byID($config->ID)->OfficePhone);
 	}
 
-	public function testSocialProfileFieldsSaveDraftThenPublish()
-	{
+
+	/**
+	 *
+	 */
+	public function testSocialProfileFieldsSaveDraftThenPublish() {
 		$config = SiteConfig::current_site_config();
 		$profiles = [
 			'TwitterID' => 'https://x.com/example',
@@ -113,16 +134,21 @@ class VersionedSiteConfigTest extends FunctionalTest
 		$this->assertSame('https://www.youtube.com/@example', $live->getYouTubeURL());
 	}
 
-	public function testSettingsFormRejectsAnotherRecordId()
-	{
+
+	/**
+	 *
+	 */
+	public function testSettingsFormRejectsAnotherRecordId() {
 		$config = SiteConfig::current_site_config();
 		$phone = $config->OfficePhone;
 		$this->get('admin/settings');
 		$response = $this->submitForm('Form_EditForm', 'action_save_siteconfig', [
-			'ID' => $config->ID + 1,
-			'OfficePhone' => '555-0200',
-		]);
+				'ID' => $config->ID + 1,
+				'OfficePhone' => '555-0200',
+			]);
 		$this->assertSame(400, $response->getStatusCode());
 		$this->assertSame($phone, Versioned::get_by_stage(SiteConfig::class, Versioned::DRAFT)->byID($config->ID)->OfficePhone);
 	}
+
+
 }

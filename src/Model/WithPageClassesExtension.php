@@ -1,4 +1,10 @@
 <?php
+/**
+ * src/Model/WithPageClassesExtension.php
+ *
+ * @package default
+ */
+
 
 namespace Logicbrush\HeroContent\Model;
 
@@ -12,12 +18,17 @@ class WithPageClassesExtension extends DataExtension
 		'AdditionalCSSClasses' => 'Text',
 	];
 
-	public function updateSettingsFields(FieldList $fields)
-	{
+	/**
+	 *
+	 * @param FieldList $fields
+	 */
+	public function updateSettingsFields(FieldList $fields) {
 		$fields->addFieldToTab(
 			'Root.Settings',
 			TextField::create('AdditionalCSSClasses', 'Additional CSS classes')
-				->setDescription('Space-separated CSS class names to add to this page, for example: service-page featured.')
+			->setDescription('Space-separated CSS class names to add to this page, for example: service-page featured.')
 		);
 	}
+
+
 }

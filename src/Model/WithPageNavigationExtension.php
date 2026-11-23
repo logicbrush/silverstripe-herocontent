@@ -1,4 +1,10 @@
 <?php
+/**
+ * src/Model/WithPageNavigationExtension.php
+ *
+ * @package default
+ */
+
 
 namespace Logicbrush\HeroContent\Model;
 
@@ -20,6 +26,10 @@ class WithPageNavigationExtension extends DataExtension
 		'MenuLinkCallToAction' => 'Boolean',
 	];
 
+	/**
+	 *
+	 * @param unknown $tagString
+	 */
 	public function MetaTags(string &$tagString): void
 	{
 		$priorityExcluded = $this->owner->hasField('Priority')
@@ -36,22 +46,36 @@ class WithPageNavigationExtension extends DataExtension
 		}
 	}
 
-	public function updateSettingsFields(FieldList $fields)
-	{
+
+	/**
+	 *
+	 * @param FieldList $fields
+	 */
+	public function updateSettingsFields(FieldList $fields) {
 		$fields->addFieldsToTab('Root.Settings', [
-			TextField::create('MenuIcon', 'Menu icon')
+				TextField::create('MenuIcon', 'Menu icon')
 				->setDescription('Font Awesome classes, e.g. fa-solid fa-desktop.'),
-			CheckboxField::create('MenuLinkCallToAction', 'Display menu link as a call to action'),
-			CheckboxField::create('HideInFooter', 'Hide in footer'),
-			CheckboxField::create('DisplayChildrenInFooter', 'Show subpages in footer'),
-		]);
+				CheckboxField::create('MenuLinkCallToAction', 'Display menu link as a call to action'),
+				CheckboxField::create('HideInFooter', 'Hide in footer'),
+				CheckboxField::create('DisplayChildrenInFooter', 'Show subpages in footer'),
+			]);
 	}
 
+
+	/**
+	 *
+	 * @return unknown
+	 */
 	public function FooterMenu(): ArrayList
 	{
 		return $this->footerPages(0);
 	}
 
+
+	/**
+	 *
+	 * @return unknown
+	 */
 	public function FooterMenuColumns(): ArrayList
 	{
 		$pages = $this->FooterMenu();
@@ -63,13 +87,18 @@ class WithPageNavigationExtension extends DataExtension
 		$columnSize = (int) ceil($pages->count() / 3);
 		foreach (array_chunk($pages->toArray(), $columnSize) as $column) {
 			$columns->push(ArrayData::create([
-				'Pages' => ArrayList::create($column),
-			]));
+						'Pages' => ArrayList::create($column),
+					]));
 		}
 
 		return $columns;
 	}
 
+
+	/**
+	 *
+	 * @return unknown
+	 */
 	public function FooterChildren(): ArrayList
 	{
 		if (!$this->owner->DisplayChildrenInFooter) {
@@ -78,9 +107,9 @@ class WithPageNavigationExtension extends DataExtension
 
 		if ($this->owner->hasMethod('getBlogPosts')) {
 			return $this->owner->getBlogPosts()
-				->filter('HideInFooter', false)
-				->limit(3)
-				->filterByCallback(static function (SiteTree $page): bool {
+			->filter('HideInFooter', false)
+			->limit(3)
+			->filterByCallback(static function (SiteTree $page): bool {
 					return $page->canView();
 				});
 		}
@@ -88,16 +117,24 @@ class WithPageNavigationExtension extends DataExtension
 		return $this->footerPages((int) $this->owner->ID);
 	}
 
+
+	/**
+	 *
+	 * @param int     $parentID
+	 * @return unknown
+	 */
 	private function footerPages(int $parentID): ArrayList
 	{
 		return Page::get()
-			->filterAny(['ShowInMenus' => true, 'ShowInSearch' => true])
-			->filter([
+		->filterAny(['ShowInMenus' => true, 'ShowInSearch' => true])
+		->filter([
 				'ParentID' => $parentID,
 				'HideInFooter' => false,
 			])
-			->filterByCallback(static function (SiteTree $page): bool {
+		->filterByCallback(static function (SiteTree $page): bool {
 				return $page->canView();
 			});
 	}
+
+
 }

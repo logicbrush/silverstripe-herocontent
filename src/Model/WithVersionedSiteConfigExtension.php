@@ -1,4 +1,10 @@
 <?php
+/**
+ * src/Model/WithVersionedSiteConfigExtension.php
+ *
+ * @package default
+ */
+
 
 namespace Logicbrush\HeroContent\Model;
 
@@ -12,8 +18,12 @@ use SilverStripe\Versioned\Versioned;
 
 class WithVersionedSiteConfigExtension extends DataExtension
 {
-	public function updateCMSActions(FieldList $actions)
-	{
+
+	/**
+	 *
+	 * @param FieldList $actions
+	 */
+	public function updateCMSActions(FieldList $actions) {
 		$save = $actions->fieldByName('action_save_siteconfig');
 		if (!$save) {
 			return;
@@ -24,30 +34,35 @@ class WithVersionedSiteConfigExtension extends DataExtension
 		if ($this->owner->canPublish()) {
 			$actions->push(
 				FormAction::create('publish_siteconfig', _t(__CLASS__ . '.PUBLISH', 'Publish'))
-					->addExtraClass('btn-primary font-icon-rocket')
+				->addExtraClass('btn-primary font-icon-rocket')
 			);
 		}
 	}
 
-	public function requireDefaultRecords()
-	{
+
+	/**
+	 *
+	 */
+	public function requireDefaultRecords() {
 		Versioned::withVersionedMode(function () {
-			Versioned::set_stage(Versioned::DRAFT);
-			$configs = SiteConfig::get();
-			if (!$configs->exists()) {
-				$config = SiteConfig::make_site_config();
-				if (!$config->publishSingle()) {
-					throw new RuntimeException('Could not publish the initial site configuration.');
+				Versioned::set_stage(Versioned::DRAFT);
+				$configs = SiteConfig::get();
+				if (!$configs->exists()) {
+					$config = SiteConfig::make_site_config();
+					if (!$config->publishSingle()) {
+						throw new RuntimeException('Could not publish the initial site configuration.');
+					}
+					return;
 				}
-				return;
-			}
-			foreach ($configs->filter('Version', 0) as $config) {
-				$config->write();
-				if (!$config->publishSingle()) {
-					throw new RuntimeException('Could not publish the existing site configuration during versioning setup.');
+				foreach ($configs->filter('Version', 0) as $config) {
+					$config->write();
+					if (!$config->publishSingle()) {
+						throw new RuntimeException('Could not publish the existing site configuration during versioning setup.');
+					}
+					DB::alteration_message('Enabled Draft/Live versioning for existing site settings.', 'notice');
 				}
-				DB::alteration_message('Enabled Draft/Live versioning for existing site settings.', 'notice');
-			}
-		});
+			});
 	}
+
+
 }
