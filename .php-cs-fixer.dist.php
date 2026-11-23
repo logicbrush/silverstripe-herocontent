@@ -6,7 +6,7 @@ use Logicbrush\Build\Fixer\RequirePhpDocFixer;
 use PhpCsFixer\Config;
 use PhpCsFixer\Finder;
 
-require_once __DIR__ . '/scripts/.bootstrap/RequirePhpDocFixer.php';
+require_once __DIR__ . '/.php-cs-fixer/RequirePhpDocFixer.php';
 
 $finder = Finder::create()
 	->in( __DIR__ )
