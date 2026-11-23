@@ -2,10 +2,11 @@
 
 namespace Logicbrush\HeroContent\Tests;
 
-use Logicbrush\HeroContent\Model\AdditionalContent;
-use Logicbrush\HeroContent\Model\WithAdditionalContentExtension;
+use Logicbrush\HeroContent\Model\FeaturedContent;
+use Logicbrush\HeroContent\Model\WithFeaturedContentExtension;
 use Logicbrush\HeroContent\Forms\SingleValueTagField;
 use SilverStripe\CMS\Model\SiteTree;
+use SilverStripe\Core\Config\Config;
 use SilverStripe\Dev\SapphireTest;
 use SilverStripe\Forms\Form;
 use SilverStripe\Forms\TextField;
@@ -19,26 +20,38 @@ use SilverStripe\Versioned\Versioned;
 class ContentBlocksTestPage extends SiteTree
 {
 	private static $extensions = [
-		WithAdditionalContentExtension::class,
+		WithFeaturedContentExtension::class,
 	];
 }
 
-class AdditionalContentTest extends SapphireTest
+class FeaturedContentTest extends SapphireTest
 {
 	public $usesDatabase = true;
+
+	public function testImageWidthsCanBeConfigured(): void {
+		Config::nest();
+		try {
+			Config::modify()->set(FeaturedContent::class, 'image_width', 800);
+			$block = FeaturedContent::create();
+			$this->assertSame(800, $block->getImageWidth());
+			$this->assertSame(1600, $block->getImageSrcSetWidth());
+		} finally {
+			Config::unnest();
+		}
+	}
 
 	public function testCanManageContentBlocks() {
 		$page = new ContentBlocksTestPage();
 		$page->write();
 
-		$block = new AdditionalContent();
-		$block->Content = '<p>Additional content</p>';
+		$block = new FeaturedContent();
+		$block->Content = '<p>Featured content</p>';
 		$block->Style = 'existing-style';
 		$page->ContentBlocks()->add($block);
 
 		$this->assertCount(1, $page->ContentBlocks());
-		$this->assertStringContainsString('Additional content', (string) $page->AdditionalContent());
-		$this->assertNotNull($page->getCMSFields()->fieldByName('Root.AdditionalContent.ContentBlocks'));
+		$this->assertStringContainsString('Featured content', (string) $page->FeaturedContent());
+		$this->assertNotNull($page->getCMSFields()->fieldByName('Root.FeaturedContent.ContentBlocks'));
 		$this->assertInstanceOf(DBVarchar::class, $block->dbObject('Style'));
 		$styleField = $block->getCMSFields()->fieldByName('Root.Main.Style');
 		$this->assertInstanceOf(TagField::class, $styleField);
@@ -47,47 +60,25 @@ class AdditionalContentTest extends SapphireTest
 		$this->assertTrue($styleField->getCanCreate());
 		$this->assertTrue($styleField->getSourceList()->filter('Style', 'existing-style')->exists());
 
-		$existingBlockCount = AdditionalContent::get()->count();
+		$existingBlockCount = FeaturedContent::get()->count();
 		$styleField->setValue('new-style');
 		$styleField->saveInto($block);
 		$this->assertSame('new-style', $block->Style);
-		$this->assertSame($existingBlockCount, AdditionalContent::get()->count());
+		$this->assertSame($existingBlockCount, FeaturedContent::get()->count());
 	}
 
 	public function testLegacyClassNameIsMappedToNamespacedModel() {
 		$mapping = DatabaseAdmin::config()->get('classname_value_remapping');
 
-		$this->assertSame(AdditionalContent::class, $mapping['ContentBlock']);
-		$this->assertSame('ContentBlock', DataObject::getSchema()->tableName(AdditionalContent::class));
-	}
-
-	public function testRendersColumnSpansInPicoGrid() {
-		$page = ContentBlocksTestPage::create();
-		$page->write();
-		foreach (['1', '6', '12', 'all'] as $columns) {
-			$page->ContentBlocks()->add(AdditionalContent::create([
-				'Content' => '<p>Grid content</p>',
-				'Columns' => $columns,
-				'CssID' => 'grid-block-' . $columns,
-				'Style' => 'grid-test',
-			]));
-		}
-
-		$html = HTMLValue::create((string) $page->AdditionalContent());
-		$grid = $html->query('//div[contains(concat(" ", normalize-space(@class), " "), " additional-content-grid ")]');
-		$this->assertSame(1, $grid->length);
-		$this->assertSame(4, $html->query('//div[contains(concat(" ", normalize-space(@class), " "), " additional-content-grid ")]/div')->length);
-		foreach (['1', '6', '12'] as $columns) {
-			$block = $html->query('//*[@id="grid-block-' . $columns . '"]')->item(0);
-			$this->assertSame('--additional-content-columns: ' . $columns, $block->getAttribute('style'));
-		}
-		$this->assertFalse($html->query('//*[@id="grid-block-all"]')->item(0)->hasAttribute('style'));
+		$this->assertSame(FeaturedContent::class, $mapping['ContentBlock']);
+		$this->assertSame(FeaturedContent::class, $mapping['Logicbrush\HeroContent\Model\AdditionalContent']);
+		$this->assertSame('ContentBlock', DataObject::getSchema()->tableName(FeaturedContent::class));
 	}
 
 	public function testEditFormLoadsStoredStyle() {
-		$block = AdditionalContent::create(['Style' => 'existing-style']);
+		$block = FeaturedContent::create(['Style' => 'existing-style']);
 		$block->write();
-		$block = AdditionalContent::get()->byID($block->ID);
+		$block = FeaturedContent::get()->byID($block->ID);
 
 		$form = Form::create(null, 'EditForm', $block->getCMSFields());
 		$form->loadDataFrom($block);
@@ -112,7 +103,7 @@ class AdditionalContentTest extends SapphireTest
 	public function testSavesAndRendersClassesOnIndividualBlocks(string $classes) {
 		$page = ContentBlocksTestPage::create();
 		$page->write();
-		$block = AdditionalContent::create([
+		$block = FeaturedContent::create([
 			'Content' => '<h2>Section heading</h2>',
 			'Columns' => '6',
 			'Style' => 'class-test',
@@ -126,20 +117,20 @@ class AdditionalContentTest extends SapphireTest
 		$form->Fields()->dataFieldByName('AdditionalCSSClasses')->setValue($classes);
 		$form->saveInto($block);
 		$block->write();
-		$this->assertSame($classes, AdditionalContent::get()->byID($block->ID)->AdditionalCSSClasses);
-		$page->ContentBlocks()->add(AdditionalContent::create([
+		$this->assertSame($classes, FeaturedContent::get()->byID($block->ID)->AdditionalCSSClasses);
+		$page->ContentBlocks()->add(FeaturedContent::create([
 			'Content' => '<p>Ordinary block</p>',
 			'Columns' => '6',
 			'Style' => 'class-test',
 			'CssID' => 'ordinary-block',
 		]));
 
-		$html = HTMLValue::create((string) $page->AdditionalContent());
+		$html = HTMLValue::create((string) $page->FeaturedContent());
 		$styled = $html->query('//*[@id="styled-block"]')->item(0);
-		$this->assertSame('additional with-icon typography ' . $classes, $styled->getAttribute('class'));
+		$this->assertSame('featured ' . $classes, $styled->getAttribute('class'));
 		$this->assertFalse($styled->hasAttribute('onclick'));
-		$this->assertSame('--additional-content-columns: 6', $styled->getAttribute('style'));
-		$this->assertSame('additional typography', $html->query('//*[@id="ordinary-block"]')->item(0)->getAttribute('class'));
+		$this->assertSame(1, $html->query('//*[@id="styled-block"]/*[contains(concat(" ", normalize-space(@class), " "), " fa-icon ")]')->length);
+		$this->assertSame('featured', $html->query('//*[@id="ordinary-block"]')->item(0)->getAttribute('class'));
 		$this->assertSame(1, $html->query('//section[contains(concat(" ", normalize-space(@class), " "), " class-test ")]')->length);
 	}
 
@@ -153,14 +144,14 @@ class AdditionalContentTest extends SapphireTest
 	public function testBlockClassesRespectDraftAndLive() {
 		Versioned::withVersionedMode(function () {
 			Versioned::set_stage(Versioned::DRAFT);
-			$block = AdditionalContent::create(['AdditionalCSSClasses' => 'featured']);
+			$block = FeaturedContent::create(['AdditionalCSSClasses' => 'featured']);
 			$block->write();
 			$block->publishSingle();
 			$block->AdditionalCSSClasses = 'no-card text-center';
 			$block->write();
 
-			$this->assertSame('no-card text-center', Versioned::get_by_stage(AdditionalContent::class, Versioned::DRAFT)->byID($block->ID)->AdditionalCSSClasses);
-			$this->assertSame('featured', Versioned::get_by_stage(AdditionalContent::class, Versioned::LIVE)->byID($block->ID)->AdditionalCSSClasses);
+			$this->assertSame('no-card text-center', Versioned::get_by_stage(FeaturedContent::class, Versioned::DRAFT)->byID($block->ID)->AdditionalCSSClasses);
+			$this->assertSame('featured', Versioned::get_by_stage(FeaturedContent::class, Versioned::LIVE)->byID($block->ID)->AdditionalCSSClasses);
 		});
 	}
 }

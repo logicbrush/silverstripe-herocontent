@@ -15,15 +15,15 @@ use SilverStripe\View\ArrayData;
 use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
 
 /**
- * This extension provides additional content blocks for the page,
+ * This extension provides featured content blocks for the page,
  * which can be arranged dynamically in the CMS.
  *
- * @method HasManyList<AdditionalContent> ContentBlocks()
+ * @method HasManyList<FeaturedContent> ContentBlocks()
  * @extends Extension<Page&static>
  */
-class WithAdditionalContentExtension extends Extension {
+class WithFeaturedContentExtension extends Extension {
 	private static array $has_many = [
-		'ContentBlocks' => AdditionalContent::class . '.Page',
+		'ContentBlocks' => FeaturedContent::class . '.Page',
 	];
 
 	private static array $owns = [
@@ -33,15 +33,15 @@ class WithAdditionalContentExtension extends Extension {
 	/**
 	 * @return string|null
 	 */
-	public function AdditionalContent() {
+	public function FeaturedContent() {
 		$contentBlocks = $this->getOwner()->ContentBlocks();
 		if (!$contentBlocks->exists()) {
 			return null;
 		}
 
 		return ArrayData::create( [
-			'AdditionalContent' => $contentBlocks,
-		] )->renderWith( 'AdditionalContent' );
+			'FeaturedContent' => $contentBlocks,
+		] )->renderWith( 'FeaturedContent' );
 	}
 
 	/**
@@ -76,7 +76,7 @@ class WithAdditionalContentExtension extends Extension {
 		] );
 
 		$fields->addFieldToTab(
-			'Root.AdditionalContent',
+			'Root.FeaturedContent',
 			GridField::create(
 				'ContentBlocks',
 				'Content Blocks',
@@ -87,6 +87,6 @@ class WithAdditionalContentExtension extends Extension {
 	}
 
 	private static array $casting = [
-		'AdditionalContent' => 'HTMLText',
+		'FeaturedContent' => 'HTMLText',
 	];
 }

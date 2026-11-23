@@ -10,7 +10,7 @@ use SilverStripe\ORM\DB;
 use SilverStripe\SiteConfig\SiteConfig;
 use SilverStripe\Versioned\Versioned;
 
-class VersionedSiteConfigExtension extends DataExtension
+class WithVersionedSiteConfigExtension extends DataExtension
 {
 	public function updateCMSActions(FieldList $actions)
 	{

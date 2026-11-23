@@ -2,10 +2,14 @@
 
 namespace Logicbrush\HeroContent\Model;
 
+use Page;
+use SilverStripe\CMS\Model\SiteTree;
 use SilverStripe\Forms\CheckboxField;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\TextField;
+use SilverStripe\ORM\ArrayList;
 use SilverStripe\ORM\DataExtension;
+use SilverStripe\View\ArrayData;
 
 class WithPageNavigationExtension extends DataExtension
 {
@@ -41,5 +45,59 @@ class WithPageNavigationExtension extends DataExtension
 			CheckboxField::create('HideInFooter', 'Hide in footer'),
 			CheckboxField::create('DisplayChildrenInFooter', 'Show subpages in footer'),
 		]);
+	}
+
+	public function FooterMenu(): ArrayList
+	{
+		return $this->footerPages(0);
+	}
+
+	public function FooterMenuColumns(): ArrayList
+	{
+		$pages = $this->FooterMenu();
+		$columns = ArrayList::create();
+		if (!$pages->exists()) {
+			return $columns;
+		}
+
+		$columnSize = (int) ceil($pages->count() / 3);
+		foreach (array_chunk($pages->toArray(), $columnSize) as $column) {
+			$columns->push(ArrayData::create([
+				'Pages' => ArrayList::create($column),
+			]));
+		}
+
+		return $columns;
+	}
+
+	public function FooterChildren(): ArrayList
+	{
+		if (!$this->owner->DisplayChildrenInFooter) {
+			return ArrayList::create();
+		}
+
+		if ($this->owner->hasMethod('getBlogPosts')) {
+			return $this->owner->getBlogPosts()
+				->filter('HideInFooter', false)
+				->limit(3)
+				->filterByCallback(static function (SiteTree $page): bool {
+					return $page->canView();
+				});
+		}
+
+		return $this->footerPages((int) $this->owner->ID);
+	}
+
+	private function footerPages(int $parentID): ArrayList
+	{
+		return Page::get()
+			->filterAny(['ShowInMenus' => true, 'ShowInSearch' => true])
+			->filter([
+				'ParentID' => $parentID,
+				'HideInFooter' => false,
+			])
+			->filterByCallback(static function (SiteTree $page): bool {
+				return $page->canView();
+			});
 	}
 }

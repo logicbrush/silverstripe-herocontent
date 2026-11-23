@@ -10,6 +10,7 @@ namespace Logicbrush\HeroContent\Model;
 
 use SilverStripe\AssetAdmin\Forms\UploadField;
 use SilverStripe\Assets\Image;
+use SilverStripe\Core\Config\Config;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
@@ -21,6 +22,11 @@ use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
 
 class WithHeroContentExtension extends DataExtension
 {
+	private static int $hero_image_width = 2400;
+
+	public function getHeroImageWidth(): int {
+		return (int) Config::forClass(self::class)->get('hero_image_width');
+	}
 
 	/**
 	 *

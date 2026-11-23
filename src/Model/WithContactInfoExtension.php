@@ -8,7 +8,7 @@ use SilverStripe\Forms\TextareaField;
 use SilverStripe\Forms\TextField;
 use SilverStripe\ORM\DataExtension;
 
-class ContactInfoExtension extends DataExtension
+class WithContactInfoExtension extends DataExtension
 {
 	private static array $db = [
 		'ContactName' => 'Varchar(50)',

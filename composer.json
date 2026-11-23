@@ -21,6 +21,9 @@
 		"symbiote/silverstripe-gridfieldextensions": "*",
 		"jonom/focuspoint": "*"
 	},
+	"suggest": {
+		"picocss/pico": "Recommended for styling the module's starter templates."
+	},
 	"require-dev": {
 		"phpunit/phpunit": "^8.0||^9.5",
 		"silverstripe/sqlite3": "*",

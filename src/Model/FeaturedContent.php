@@ -31,12 +31,13 @@ use SilverStripe\Versioned\Versioned;
  * @method Image Image()
  * @mixin Versioned
  */
-class AdditionalContent extends DataObject {
+class FeaturedContent extends DataObject {
 	private static $last_style = "\t";
 
 	private static string $singular_name = 'Content Block';
 	private static string $plural_name = 'Content Blocks';
 	private static string $table_name = 'ContentBlock';
+	private static int $image_width = 600;
 
 	private static array $extensions = [
 		Versioned::class,
@@ -82,6 +83,14 @@ class AdditionalContent extends DataObject {
 
 	private static string $default_sort = 'SortOrder ASC';
 
+	public function getImageWidth(): int {
+		return (int) self::config()->get( 'image_width' );
+	}
+
+	public function getImageSrcSetWidth(): int {
+		return $this->getImageWidth() * 2;
+	}
+
 	/**
 	 *
 	 * @Metrics( crap = 2, uncovered = true )
@@ -98,7 +107,7 @@ class AdditionalContent extends DataObject {
 			SingleValueTagField::create(
 				'Style',
 				'Group Style',
-				AdditionalContent::get()->exclude( 'Style', '' ),
+				FeaturedContent::get()->exclude( 'Style', '' ),
 				null,
 				'Style',
 			)

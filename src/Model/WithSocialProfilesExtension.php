@@ -11,7 +11,7 @@ use SilverStripe\ORM\DataExtension;
 /**
  * Retain the site's existing social profile settings.
  */
-class SocialProfilesExtension extends DataExtension {
+class WithSocialProfilesExtension extends DataExtension {
 	private static array $db = [
 		'LinkedInID' => 'Varchar(255)',
 		'FacebookID' => 'Varchar(255)',

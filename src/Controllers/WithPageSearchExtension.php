@@ -10,7 +10,7 @@ use SilverStripe\ORM\PaginatedList;
 use SilverStripe\Versioned\Versioned;
 use SilverStripe\View\ArrayData;
 
-class PageSearchExtension extends Extension
+class WithPageSearchExtension extends Extension
 {
 	private static $allowed_actions = [
 		'Search',
