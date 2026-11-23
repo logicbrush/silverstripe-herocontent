@@ -18,7 +18,9 @@ identity settings.
 ## Installation
 
 Requires [PHP](https://www.php.net/manual/en/) `^8.1` and
-[Silverstripe CMS 5](https://docs.silverstripe.org/en/5/).
+[Silverstripe CMS 5](https://docs.silverstripe.org/en/5/) or
+[Silverstripe CMS 6](https://docs.silverstripe.org/en/6/). CMS 6 requires PHP
+`^8.3`.
 Composer installs the module's other dependencies; see
 [`composer.json`](composer.json).
 Composer suggests [Pico CSS](https://picocss.com/) because the starter
@@ -300,8 +302,8 @@ menu and toggle only once per page; the menu ID is `mobile-navigation`.
 
 ### 2026.12 (In Progress)
 
-- Dropped Silverstripe CMS 4 support; the module now requires CMS 5 and PHP 8.1
-  or later.
+- Dropped Silverstripe CMS 4 support and added CMS 6 support. CMS 5 requires
+  PHP 8.1 or later; CMS 6 requires PHP 8.3 or later.
 - Expanded the module with ordered content blocks, page presentation and
   navigation settings, site search, mobile navigation, and versioned site
   contact, logo, and social-profile settings.
