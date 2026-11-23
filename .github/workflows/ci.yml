@@ -19,12 +19,6 @@ jobs:
           - operating-system: 'ubuntu-latest'
             silverstripe-version: '5.0'
             php-version: '8.3'
-          - operating-system: 'ubuntu-latest'
-            silverstripe-version: '4.0'
-            php-version: '8.0'
-          - operating-system: 'ubuntu-latest'
-            silverstripe-version: '4.0'
-            php-version: '7.4'
   
     name: SS ${{ matrix.silverstripe-version }}, PHP ${{ matrix.php-version }}
     runs-on: ${{ matrix.operating-system }}

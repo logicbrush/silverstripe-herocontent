@@ -17,8 +17,7 @@ identity settings.
 
 ## Installation
 
-Requires [PHP](https://www.php.net/manual/en/) `^7.4 || ^8.0` and
-[Silverstripe CMS 4](https://docs.silverstripe.org/en/4/) or
+Requires [PHP](https://www.php.net/manual/en/) `^8.1` and
 [Silverstripe CMS 5](https://docs.silverstripe.org/en/5/).
 Composer installs the module's other dependencies; see
 [`composer.json`](composer.json).
@@ -301,6 +300,8 @@ menu and toggle only once per page; the menu ID is `mobile-navigation`.
 
 ### 2026.12 (In Progress)
 
+- Dropped Silverstripe CMS 4 support; the module now requires CMS 5 and PHP 8.1
+  or later.
 - Expanded the module with ordered content blocks, page presentation and
   navigation settings, site search, mobile navigation, and versioned site
   contact, logo, and social-profile settings.

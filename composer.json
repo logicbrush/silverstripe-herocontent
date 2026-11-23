@@ -14,10 +14,10 @@
 		"email": "jflearn@logicbrush.com"
 	}],
 	"require": {
-		"php": "^7.4||^8.0",
-		"silverstripe/cms": "^4.0||^5.0",
-		"silverstripe/asset-admin": "*",
-		"silverstripe/tagfield": "^2.0 || ^3.0",
+		"php": "^8.1",
+		"silverstripe/cms": "^5.0",
+		"silverstripe/asset-admin": "^2.0",
+		"silverstripe/tagfield": "^3.0",
 		"symbiote/silverstripe-gridfieldextensions": "*",
 		"jonom/focuspoint": "*"
 	},
@@ -25,7 +25,7 @@
 		"picocss/pico": "Recommended for styling the module's starter templates."
 	},
 	"require-dev": {
-		"phpunit/phpunit": "^8.0||^9.5",
+		"phpunit/phpunit": "^9.5",
 		"silverstripe/sqlite3": "*",
 		"logicbrush/metrics": "*",
 		"cmrcx/phptidy": "*"
