@@ -13,11 +13,28 @@ jobs:
     runs-on: 'ubuntu-latest'
     steps:
       - uses: actions/checkout@v3
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: xdebug, intl
+      - name: Configure CI advisory ignores
+        run: |
+          jq --slurpfile ids .github/composer-advisory-ignores.json \
+          '.config.policy.advisories["ignore-id"] = $ids[0]' \
+          composer.json > composer-ci.json
       - uses: php-actions/composer@v6
+        env:
+          COMPOSER: composer-ci.json
+          GIT_CONFIG_COUNT: '1'
+          GIT_CONFIG_KEY_0: safe.directory
+          GIT_CONFIG_VALUE_0: /app
         with:
           command: update --with silverstripe/framework:^5.0
           php_version: 8.1
           php_extensions: xdebug intl
+      - name: Apply Rector
+        run: ./vendor/bin/rector process src tests
       - name: Generate Code Coverage
         run: |
           XDEBUG_MODE=coverage \
@@ -28,8 +45,11 @@ jobs:
           find src -name "*.php" | xargs ./vendor/bin/metrics annotate ./coverage.xml
       - name: Tidy Source Code
         run: |
-          find tests -name "*.php" | xargs ./vendor/bin/phptidy.php replace
-          find src -name "*.php" | xargs ./vendor/bin/phptidy.php replace
+          mkdir -p build/caches
+          ./vendor/bin/php-cs-fixer fix \
+            --config=.php-cs-fixer.dist.php \
+            --path-mode=intersection \
+            src tests
       - name: Push Back Changes
         run: |
           git diff --exit-code src tests || ( \

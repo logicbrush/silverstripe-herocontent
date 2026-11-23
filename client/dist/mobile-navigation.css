@@ -1,0 +1,144 @@
+.hc-mobile-navigation-toggle,
+.hc-mobile-navigation[aria-hidden="true"] {
+	display: none;
+}
+
+.hc-mobile-navigation-button {
+	width: 2.75rem;
+	height: auto;
+	min-height: 2.75rem;
+	flex-shrink: 0;
+	margin: 0;
+	padding: 0.25rem;
+	border: 0;
+	border-radius: 0.25rem;
+	background: transparent;
+	color: var(--pico-primary, #0d6efd);
+	box-shadow: none;
+	line-height: 1;
+}
+
+.hc-mobile-navigation-button:hover {
+	background: rgb(127 127 127 / 15%);
+}
+
+.hc-mobile-navigation-button:focus-visible {
+	outline: 2px solid currentColor;
+	outline-offset: 3px;
+}
+
+.hc-mobile-navigation-button svg {
+	display: block;
+	width: 1.75rem;
+	height: 1.75rem;
+	margin: 0 auto;
+	pointer-events: none;
+}
+
+.hc-mobile-navigation-label {
+	display: block;
+	margin-top: 0.15rem;
+	font-size: 0.6rem;
+	font-weight: 600;
+	letter-spacing: 0.06em;
+	line-height: 1;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+.hc-mobile-navigation {
+	position: fixed;
+	inset: 0;
+	z-index: 10000;
+	display: flex;
+	justify-content: flex-end;
+}
+
+.hc-mobile-navigation-overlay {
+	position: absolute;
+	inset: 0;
+	background: rgb(0 0 0 / 50%);
+}
+
+.hc-mobile-navigation-panel {
+	position: relative;
+	width: min(85vw, 24rem);
+	height: 100%;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+	padding: var(--pico-spacing, 1rem);
+	background: var(--pico-background-color, white);
+	color: var(--pico-color, #212529);
+	box-shadow: -0.25rem 0 1rem rgb(0 0 0 / 20%);
+}
+
+.hc-mobile-navigation-panel > button {
+	display: block;
+	margin-left: auto;
+}
+
+.hc-mobile-navigation-panel nav,
+.hc-mobile-navigation-panel nav ul {
+	display: block;
+}
+
+.hc-mobile-navigation-panel nav ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.hc-mobile-navigation-panel nav ul ul {
+	padding-left: 1rem;
+}
+
+.hc-mobile-navigation-panel nav li {
+	display: block;
+	padding: 0;
+}
+
+.hc-mobile-navigation-panel nav a {
+	display: block;
+	margin: 0;
+	padding: 0.75rem;
+	overflow-wrap: anywhere;
+}
+
+.hc-mobile-navigation-panel [aria-current="page"] {
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+.hc-mobile-navigation-open {
+	overflow: hidden;
+}
+
+@media (max-width: 1023px) {
+	[data-mobile-navigation-desktop] {
+		flex-wrap: wrap;
+	}
+
+	.has-mobile-navigation [data-mobile-navigation-desktop] {
+		display: none;
+	}
+
+	.has-mobile-navigation .hc-mobile-navigation-toggle:not([hidden]) {
+		display: inline-block;
+		margin: 0;
+	}
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.hc-mobile-navigation-panel {
+		animation: hc-mobile-navigation-enter 200ms ease-out;
+	}
+}
+
+@keyframes hc-mobile-navigation-enter {
+	from {
+		transform: translateX(100%);
+	}
+	to {
+		transform: translateX(0);
+	}
+}

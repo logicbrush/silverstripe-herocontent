@@ -1,0 +1,7 @@
+---
+Name: herocontentlegacy
+---
+SilverStripe\ORM\DatabaseAdmin:
+  classname_value_remapping:
+    ContentBlock: Logicbrush\HeroContent\Model\FeaturedContent
+    Logicbrush\HeroContent\Model\AdditionalContent: Logicbrush\HeroContent\Model\FeaturedContent

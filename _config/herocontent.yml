@@ -5,3 +5,31 @@ name: herocontent
 Page:
   extensions:
     - Logicbrush\HeroContent\Model\WithHeroContentExtension
+    - Logicbrush\HeroContent\Model\WithFeaturedContentExtension
+    - Logicbrush\HeroContent\Model\WithPageClassesExtension
+    - Logicbrush\HeroContent\Model\WithPageNavigationExtension
+
+PageController:
+  extensions:
+    - Logicbrush\HeroContent\Controllers\WithPageSearchExtension
+
+SilverStripe\SiteConfig\SiteConfig:
+  extensions:
+    - SilverStripe\Versioned\Versioned
+    - Logicbrush\HeroContent\Model\WithVersionedSiteConfigExtension
+    - Logicbrush\HeroContent\Model\WithContactInfoExtension
+    - Logicbrush\HeroContent\Model\WithSiteLogoExtension
+    - Logicbrush\HeroContent\Model\WithSocialProfilesExtension
+
+SilverStripe\Core\Injector\Injector:
+  SilverStripe\SiteConfig\SiteConfigLeftAndMain:
+    class: Logicbrush\HeroContent\Admin\VersionedSiteConfigAdmin
+
+Logicbrush\HeroContent\Model\FeaturedContent:
+  image_width: 600
+
+Logicbrush\HeroContent\Model\WithSiteLogoExtension:
+  logo_width: 256
+
+Logicbrush\HeroContent\Model\WithHeroContentExtension:
+  hero_image_width: 2400
