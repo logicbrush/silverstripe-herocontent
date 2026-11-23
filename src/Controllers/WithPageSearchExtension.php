@@ -109,9 +109,29 @@ class WithPageSearchExtension extends Extension {
 	 * @return unknown
 	 */
 	public function SiteSearchResults( $query ) {
+		$query = is_string( $query ) ? trim( $query ) : '';
+		$terms = preg_split( '/\s+/u', $query, -1, PREG_SPLIT_NO_EMPTY );
+		if ( $terms === false || $terms === [] ) {
+			return Versioned::get_by_stage( SiteTree::class, Versioned::LIVE )
+				->filter( 'ID', 0 );
+		}
+
 		$pages = Versioned::get_by_stage( SiteTree::class, Versioned::LIVE )
-		->filter( 'ShowInSearch', true );
-		return $pages->filter( 'ID', 0 );
+			->filter( 'ShowInSearch', true );
+		if ( SiteTree::singleton()->hasField( 'Priority' ) ) {
+			$pages = $pages->exclude( 'Priority', -1 );
+		}
+
+		foreach ( $terms as $term ) {
+			$pages = $pages->filterAny( [
+				'Title:PartialMatch' => $term,
+				'MenuTitle:PartialMatch' => $term,
+				'MetaDescription:PartialMatch' => $term,
+				'Content:PartialMatch' => $term,
+			] );
+		}
+
+		return $pages;
 	}
 
 
