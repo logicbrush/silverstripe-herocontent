@@ -21,6 +21,8 @@ class ContactInfoShortcode {
 	/**
   *
   * @return unknown
+  *
+  * @Metrics( crap = 7 )
   */
 	public static function render( array $args ): string {
 		$config = SiteConfig::current_site_config();
