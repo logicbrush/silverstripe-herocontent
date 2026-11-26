@@ -39,6 +39,8 @@ to fade between slides every eight seconds when there is more than one slide.
 The module includes Slick, but the theme must provide jQuery for the slider to
 initialize.
 
+![Hero Content tab with a background image and slide list](screenshots/admin-hero-content.png)
+
 Add `$HeroImage` or `$HeroImage.URL` in your template file to reference the hero
 background image. We frequently like to add it with inline CSS to our `body`
 tag, usually with a transparent overlay and `background-size: cover` and
@@ -59,18 +61,32 @@ copy the `Slides.ss` template file into your theme and modify to your liking.
 You can place this either above or below your regular `$Content` as you like.
 Or, you can leave it out entirely if you don't need rotating content.
 
+Individual slides use a rich-text editor and optional image:
+
+![Slide editor showing rich-text content](screenshots/admin-slide-editor.png)
+
+The Logicbrush homepage shows one theme-specific presentation of Hero Content
+with a background image, text, and illustration:
+
+![Logicbrush homepage hero content](screenshots/homepage-hero.png)
+
 In `Featured content`, you can create, edit, and order content blocks.
 The module renders these by default with `FeaturedContent.ss`; copy that
-template into your theme to customize the output. The model class is
-`FeaturedContent`; existing `ContentBlock` and `AdditionalContent` class names
-are remapped to it during `dev/build`. The `ContentBlock` database table and
-its fields are preserved. Run `dev/build` after upgrading to apply the
-remapping. Update project code that refers to the old `AdditionalContent` PHP
-class.
+template into your theme to customize the output.
+
+![Featured Content tab with ordered content blocks](screenshots/admin-featured-content.png)
+
+The model class is `FeaturedContent`; existing `ContentBlock` and
+`AdditionalContent` class names are remapped to it during `dev/build`. The
+`ContentBlock` database table and its fields are preserved. Run `dev/build`
+after upgrading to apply the remapping. Update project code that refers to the
+old `AdditionalContent` PHP class.
 
 Blocks can also have an image, an icon class, a Group Style, a CSS ID, and
 Extra HTML. Group Style groups blocks into sections; the theme must provide
 styles or an icon font for any icons used.
+
+![Featured Content block fields for columns, icon, group style, CSS ID, and image](screenshots/admin-content-block-editor.png)
 
 The `FeaturedContent.ss` image variant width defaults to 600 pixels in the
 module's [`_config/herocontent.yml`](_config/herocontent.yml). Override
@@ -100,6 +116,8 @@ wrapper; update theme overrides of `FeaturedContent.ss` in the same way.
 The field follows the block's normal Draft/Live publishing workflow. Run
 `dev/build?flush=1` after adding it. Class names and their styling are supplied
 by the theme, not the module.
+
+![Featured Content block fields for additional CSS classes and HTML](screenshots/admin-content-block-extra.png)
 
 ## Starter templates
 
@@ -157,6 +175,10 @@ posts. It also renders configured contact details and social profile links.
 The templates provide markup only; icon fonts, visual styles, and
 project-specific navigation remain the theme's responsibility.
 
+![Page settings with page-level CSS classes and menu icon](screenshots/page-settings.png)
+
+![Starter footer with navigation, contact information, and social profile links](screenshots/site-footer.png)
+
 ## Site search
 
 The module adds a `Search` action to `PageController`, available at each page's
@@ -193,6 +215,8 @@ Pages with **Show in search** disabled receive a `robots` `noindex` meta tag.
 Pages with a sitemap `Priority` of `-1` also receive `noindex` when that field
 is present.
 
+![Site search results for "website"](screenshots/search-results.png)
+
 ## Contact information
 
 Run `dev/build?flush=1` after installation to add the `Contact info` settings
@@ -227,6 +251,8 @@ Override `ContactInfo.ss` in your theme to customize the markup.
 Site settings provide a Logo image upload on the main tab, stored in the
 `logo` folder. `WithSiteLogoExtension` retains the legacy `Logo` relation and
 `LogoID` values. Run `dev/build?flush=1` after adding this feature.
+
+![Site Settings main tab with logo and Contact info and Social profiles tabs](screenshots/site-settings.png)
 
 The starter headers render `$SiteConfig.Logo` at the configured
 `$SiteConfig.LogoWidth`, which defaults to 256 pixels. Override it in your
@@ -266,6 +292,8 @@ or changed profiles available on Live. The starter `Footer.ss` renders text
 links for configured social profiles. Themes can customize or replace that
 markup.
 
+![Social profiles settings tab with profile fields and URL guidance](screenshots/social-profiles-settings.png)
+
 ## Mobile navigation
 
 The optional off-canvas menu uses [a11y-dialog](https://a11y-dialog.netlify.app/)
@@ -291,6 +319,9 @@ supports Escape, trapped keyboard focus, and focus restoration. Without
 JavaScript, desktop links remain available and the menu button stays hidden.
 The hamburger and close icons have visible MENU and CLOSE captions, accessible
 button labels, and visible keyboard focus indicators.
+
+![Mobile navigation panel with search and page links](screenshots/mobile-navigation.png)
+
 The footer is unaffected. Override the three `MobileNavigation*.ss` includes
 in your theme to customize the markup; the module loads its CSS and JavaScript
 only when `MobileNavigation` is included and menu pages exist. Include each
